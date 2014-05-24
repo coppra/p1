@@ -1,0 +1,63 @@
+<ol class="breadcrumb" style="margin-top:-20px;">
+  		<li class="active"><a href="#users">Users</a></li>
+  		<li class="active">New</li>
+</ol>
+<form name="userForm" id="userForm" ng-submit="processForm()" novalidate>
+<div class="row">
+	<div class="col-md-4 col-md-offset-2 col-sm-6">
+		Email
+		<input type="text" name="email" id="email" class="form-control" ng-model="user.email" ng-blur="validate_email();" required ng-class="{ 'has_error' : !userForm.email.$pristine && userForm.email.$invalid, 'valid_input':userForm.email.$valid }" ng-pattern="/^[a-zA-Z0-9]*$/">
+		
+		Password<input type="password" id="pw1" name="pw1" class="form-control" ng-model="user.password" required ng-minlength="1" ng-class="{'valid_input':!userForm.pw2.$error.pwmatch && !userForm.pw1.$pristine && !userForm.pw1.$error.minlength}" required>
+		Retype password<input type="password" id="pw2" name="pw2" class="form-control" ng-model="pw2" pw-check="pw1" required ng-class="{'valid_input':!userForm.pw2.$error.pwmatch && !userForm.pw1.$pristine && !userForm.pw1.$error.minlength}" required>
+		Acc_type<select class="form-control" ng-model="user.acc_type">
+			<option value="1_admin">1_admin</option>
+			<option value="2_franchisee">7_free</option>
+			<option value="3_">3_</option>
+			<option value="4_user" selected>4_user</option>
+		</select>
+		Name<input type="text" class="form-control" ng-model="user.name">
+		Phone1<input type="tel" name="phone1" class="form-control" ng-model="user.phone1" ng-pattern="/^[0-9]*$/">
+		Phone2<input type="tel" class="form-control" ng-model="user.phone2" ng-pattern="/^[0-9]*$/">
+	</div>
+	<div class="col-md-4 col-sm-6">
+		Country
+		<select ng-model="country" class="form-control" ng-options="country.country for country in countries"></select>
+		State
+		<select ng-model="state" class="form-control" ng-options="state.state for state in states"></select>
+		District
+		<select ng-model="district" class="form-control" ng-options="district.district for district in districts"></select>
+		Area
+		<select ng-model="area" class="form-control" ng-options="area.area for area in areas"></select>
+		Address line 1<input type="text" class="form-control">
+		Address line 2<input type="text" class="form-control">
+		Address line 3<input type="text" class="form-control">
+    </div>
+</div>
+<div class="row" style="margin-top:10px;">
+	<div class="col-sm-2 col-sm-offset-2">
+		<button type="submit" class="btn btn-primary" ng-disabled="userForm.$invalid">Add user</button>
+		<button type="reset" class="btn btn-default">Reset</button>
+		
+	</div>
+</div>
+<div class="help-block" ng-show="userForm.$invalid">
+	<span ng-show="!userForm.email.$pristine && userForm.email.$invalid">Username is required or invalid |</span>
+	<span ng-show="userForm.pw1.$error.minlength">Passwords must contain min 8 chars. |</span>
+	<span ng-show="userForm.pw2.$error.pwmatch">Passwords don't match |</span>
+	<span ng-show="!userForm.email.$pristine && userForm.email.$invalid"> Invalid Email.</span>
+	<span ng-show="userForm.phone1.$invalid && !userForm.phone1.$pristine"> Invalid Phone number.</span>
+</div>
+</form>
+{{user}}
+<style>
+.has_error{
+	border-color: red;
+}
+.valid_input{
+//	border-color: green;
+}
+select{
+	text-transform: capitalize;
+}
+</style>

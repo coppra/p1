@@ -1,0 +1,52 @@
+
+    <div class="row" style="margin-top:-10px; margin-bottom:5px;">
+        <div class="col-sm-6">
+            <div class="btn-group">                
+                <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='#/users/new'">
+                    <span class="glyphicon glyphicon-plus"></span> Add user
+                </button>
+                <button type="button" class="btn btn-default btn-sm" ng-disabled="!users_selected.length">
+                    <span class="glyphicon glyphicon-envelope"></span> Message
+                </button>
+                <button type="button" class="btn btn-default btn-sm" ng-disabled="users_selected.length!=1">
+                    <span class="glyphicon glyphicon-pencil"></span> Edit
+                </button>
+                <button type="button" class="btn btn-default btn-sm" ng-click="delete_users();" ng-disabled="!users_selected.length">
+                    <span class="glyphicon glyphicon-trash"></span> Delete
+                </button>  
+            </div>
+            
+        </div>
+        <div class="col-sm-6 col-md-3 col-md-offset-3">
+            <div class="input-group">
+                <input type="text" class="form-control">
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-search"></span> <span class="caret"></span></button>
+                    <ul class="dropdown-menu pull-right">
+                      <li><a href="#">All</a></li>
+                      <li class="divider"></li>
+                      <li><a href="#">Id</a></li>
+                      <li><a href="#">Username</a></li>
+                      <li><a href="#">Email</a></li>
+                    </ul>
+                </div><!-- /btn-group -->
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+    </div>
+    <div class="gridStyle" ng-grid="usersTable"></div>
+<style>
+    .gridStyle{
+        height: 500px;
+        width: 100%;
+        min-width: 300px;
+    }
+    .search_bar{
+        width: 200px;
+        float: right;
+    }
+    button{
+      //  border-radius: 0px !important;
+    }
+</style>
+
+

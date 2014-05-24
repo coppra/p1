@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Register | GoFindy</title>
+	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/register.css">
+	<script src="js/jquery-1.11.0.min.js"></script>
+	<script src="js/jquery.nicescroll.min.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/register.js"></script>
+</head>
+<body>
+	<div id="header1">
+		<a href="#" class="links linkfb"><img src="img/facebook.png" alt=""></a>
+		<a href="#" class="links linktw"><img src="img/twitter.png" alt=""></a>
+		<a href="#" class="links linkgl"><img src="img/google.png" alt=""></a>
+		<div id="login_link">
+			Call us for any queries at
+			<a href="tel:+918086111444">8086-111-444</a>
+		</div>
+	</div>
+	<div id="header2">
+		<a href="index.html">
+			<img src="img/logo.png" alt="GoFindy" id="logo">
+		</a>
+		<nav id="menu">
+			<a href="#" class="items">Local Search</a><a href="#" class="items">Classifieds</a><a href="#" class="items">Jobs</a><a href="#" class="items">Products</a><a href="#" class="items">Offers</a>
+		</nav>
+	</div>
+	<div class="container">
+		<div class="forms">
+			<p style="color: #0082b3; text-align:center;">New to GoFindy? Register here</p>
+			<form action="#" id="register_form" method="POST">
+				<div class="item">
+					<div class="fieldname">Name:</div>
+					<div class="field"><input type="text" name="name" id="name"></div>
+				</div>
+				<div class="item">
+					<div class="fieldname">E-mail:</div>
+					<div class="field"><input type="email" name="email" id="email" placeholder="This will be your username"></div>
+				</div>
+				<div class="item">
+					<div class="fieldname">Password:</div>
+					<div class="field"><input type="password" name="password" id="password" placeholder="Minimum 8 characters"></div>
+				</div>
+				<div class="item">
+					<div class="fieldname">Retype Password:</div>
+					<div class="field"><input type="password" name="retype" id="retype"></div>
+				</div>
+				<div class="item">
+					<div class="fieldname">Mobile number:</div>
+					<div class="field"><input type="tel" name="mobile" id="mobile"></div>
+				</div>
+				<div class="item">
+					<div class="fieldname">Gender:</div>
+					<div class="field">
+						<input type="radio" name="gender" id="gender" value="Male">Male
+						<input type="radio" name="gender" id="gender" value="Female">Female
+					</div>
+				</div>
+				<div class="item">
+					<div class="fieldname">Country:</div>
+					<div class="field">
+						<select name="country" id="country">
+							<option value="India">India</option>
+						</select>
+					</div>
+				</div>
+				<div class="item">
+					<div class="fieldname">State:</div>
+					<div class="field">
+						<select name="state" id="state">
+							<option value="Kerala">Kerala</option>
+						</select>
+					</div>
+				</div>
+				<div class="item">
+					<div class="fieldname">District:</div>
+					<div class="field">
+						<select name="district" id="district">
+							<option value="Malappuram">Malappuram</option>
+							<option value="Ernakulam">Ernakulam</option>
+							<option value="Thrissur">Thrissur</option>
+							<option value="Kozhikode">Kozhikode</option>
+							<option value="Kannur">Kannur</option>
+							<option value="Kasargode">Kasargode</option>
+						</select>
+					</div>
+				</div>
+				<div class="item">
+					<div class="fieldname">City:</div>
+					<div class="field">
+						<select name="city" id="city">
+							<option value="Tirur">Tirur</option>
+							<option value="Edappal">Edappal</option>
+							<option value="Ponnani">Ponnani</option>
+							<option value="Kuttippuram">Kuttippuram</option>
+							<option value="Valanchery">Valanchery</option>
+							<option value="Kottakkal">Kottakkal</option>
+						</select>
+					</div>
+				</div>
+				<div class="item" style="text-align: center;">
+					<input type="submit" value="Register" id="regbtn">
+					<input type="reset" value="Reset" id="resbtn">
+				</div>
+			</form>
+		</div>
+		<div class="forms">
+			<p style="color: #0082b3; text-align:center;">Already registered? Login here</p>
+			<form action="#" id="login_form" method="POST">
+				<div class="item">
+					<input type="text" name="username" id="username" placeholder="Username" style="background-image: url(img/login_username.png)">
+				</div>
+				<div class="item" style="margin-top: 5px;">or</div>
+				<div class="item" style="margin-top: 5px;">
+					<input type="text" name="smartcard" id="smartcard" placeholder="Smartcard number" style="background-image: url(img/login_smartcard.png)">
+				</div>
+				<div class="item">
+					<input type="password" name="password" id="password" placeholder="Password" style="background-image: url(img/login_password.png)">
+				</div>
+				<div class="item">
+					<input type="submit" value="Login" id="loginbtn">
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="footer">
+		<a href="#">About us</a> | 
+		<a href="#">Contact us</a> |
+		<a href="#">Feedback</a> | 
+		<a href="#">FAQ</a>
+	</div>
+
+</body>
+</html>

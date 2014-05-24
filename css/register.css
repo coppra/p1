@@ -1,0 +1,110 @@
+.forms {
+	width: 512px;
+	min-height: 100px;
+	height: auto;
+	overflow: auto;
+	//background-color: #333;
+	float: left;
+	font-size: 12px;
+}
+form#register_form {
+	background-color: #fff;
+	padding-top: 5px;
+	padding-bottom: 20px;
+	margin-top: 15px;
+}
+.item {
+	margin-top: 15px;
+	height: 30px;
+	line-height: 30px;
+}
+.fieldname {
+	float: left;
+	width: 140px;
+	padding-right: 20px;
+	text-align: right;
+}
+.field {
+	float: left;
+	width: 352px;
+}
+.field input[type="text"],
+.field input[type="tel"],
+.field input[type="password"],
+.field input[type="email"],
+.field select {
+	width: 320px;
+	height: 24px;
+	border: #ccc 1px solid;
+	color: #999;
+	border-radius: 4px;
+	padding-right: 5px;
+	padding-left: 5px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	background-color: #fff;
+	box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	color: #0082b3;
+}
+
+.item input[type="submit"],
+.item input[type="reset"] {
+	width: 80px;
+	height: 24px;
+	line-height: 24px;
+	display: inline-block;
+	text-align: center;
+	margin-top: 0px;
+	border-radius: 4px;
+	background-color: #fff;
+	font-size: 12px;
+	cursor: pointer;
+	box-sizing: content-box;
+	-moz-box-sizing: content-box;
+}
+input#regbtn {
+	border: #0082b3 1px solid;
+	color: #0082b3;
+}
+input#regbtn:hover {
+	background-color: #0082b3;
+	color: #fff;
+}
+input#resbtn {
+	border: #999 1px solid;
+	color: #999;
+	margin-left: 15px;
+}
+input#resbtn:hover {
+	background-color: #999;
+	color: #fff;
+}
+form#login_form {
+	text-align: center;
+	padding-top: 5px;
+	padding-bottom: 20px;
+	margin-top: 15px;
+}
+form#login_form input[type="text"],
+form#login_form input[type="password"] {
+	width: 240px;
+	height: 24px;
+	padding-left: 35px;
+	padding-right: 5px;
+	border: #ccc 1px solid;
+	border-radius: 4px;
+	color: #999;
+	background-repeat: no-repeat;
+	background-position: 0px center;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+input#loginbtn {
+	border: #1abc8b 1px solid;
+	color: #1abc8b;
+}
+input#loginbtn:hover {
+	background-color: #1abc8b;
+	color: #fff;
+}

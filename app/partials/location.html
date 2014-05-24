@@ -1,0 +1,201 @@
+<div class="container-fluid" stlye="padding:0">
+<div class="row">
+	<div class="col-md-3">
+		<div class="panel panel-default" >
+	  		<div class="panel-heading">
+	   			<h3 class="panel-title">Country</h3>
+	  		</div>
+	  		<div class="panel-body table-responsive">
+	    		<table class="table table-condensed table-hover" id="countries">
+	    			<thead>
+	    				<tr>
+	    					<th>Id</th>
+	    					<th>Country</th>
+	    					<th></th>
+	    				</tr>
+	    			</thead>
+	    			<tr>
+	    				<td>New</td>
+	    				<td><input type="text" class="new" ng-model="new_country"></td>
+	    				<td><button ng-click='add_country(new_country)'>ADD</td>
+	    			</tr>
+	    			<tr ng-repeat="country in countries"  ng-class="{active: country.country_id==country_id}" id='{{country.country_id}}'>
+	    				<td>{{country.country_id}}</td>
+	    				<td class="name">
+	    					<div class="no_edit_group" ng-click='get_states(country.country_id,country.country)'>{{country.country}}</div>
+	    					<div class="edit_group"><input type="text" ng-model="edited_country" name="country" value='{{country.country}}'></div>
+	    				</td>
+	    				<td class="actions" width="60px">
+							<div class="no_edit_group btn-group btn-group-xs">
+	    						<button class="btn btn-default glyphicon glyphicon-pencil" ng-click='edit_country(country.country_id,country.country)'></button>
+	    						<button class="btn btn-default glyphicon glyphicon-trash" ng-click="delete_country(country.country_id)"></button>
+	    					</div>
+	    					<div class="edit_group btn-group btn-group-xs" >
+	    						<button class="btn btn-default glyphicon glyphicon-ok" ng-click='update_country(country.country_id,edited_country)'></button>
+	    						<button class="btn btn-default glyphicon glyphicon-remove" ng-click="cancel_edit()"></button>
+	    					</div>
+	    				</td>
+	    			</tr>
+	    		</table>
+	  		</div>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="panel panel-default">
+	  		<div class="panel-heading">
+	   			<h3 class="panel-title">States in {{country}}</h3>
+	  		</div>
+	  		<div class="panel-body">
+	   			<table class="table table-condensed table-hover" id="states">
+	    			<thead>
+	    				<tr>
+	    					<th>Id</th>
+	    					<th>State</th>
+	    					<th></th>
+	    				</tr>
+	    			</thead>
+	    			<tr>
+	    				<td>New</td>
+	    				<td><input type="text" class="new" ng-model="new_state"></td>
+	    				<td><button ng-click='add_state(new_state)'>ADD</td>
+	    			</tr>
+	    			<tr ng-repeat="state in states" ng-class="{active: state.state_id==state_id}" id='{{state.state_id}}'>
+	    				<td>{{state.state_id}}</td>
+	    				<td class="name">
+	    					<div class="no_edit_group" ng-click='get_districts(state.state_id,state.state)'>{{state.state}}</div>
+	    					<div class="edit_group"><input type="text" ng-model="edited_state" name="state" value='{{state.state}}'></div>
+	    				</td>
+	    				<td class="actions" width="60px">
+							<div class="no_edit_group btn-group btn-group-xs">
+	    						<button class="btn btn-default glyphicon glyphicon-pencil" ng-click='edit_state(state.state_id,state.state)'></button>
+	    						<button class="btn btn-default glyphicon glyphicon-trash" ng-click="delete_state(state.state_id)"></button>
+	    					</div>
+	    					<div class="edit_group btn-group btn-group-xs" >
+	    						<button class="btn btn-default glyphicon glyphicon-ok" ng-click='update_state(state.state_id,edited_state)'></button>
+	    						<button class="btn btn-default glyphicon glyphicon-remove" ng-click="cancel_edit()"></button>
+	    					</div>
+	    				</td>
+	    			</tr>
+	    		</table>
+	  		</div>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="panel panel-default">
+	  		<div class="panel-heading">
+	   			<h3 class="panel-title">Districts in {{state}}</h3>
+	  		</div>
+	  		<div class="panel-body">
+	    		<table class="table table-condensed table-hover" id="districts">
+	    			<thead>
+	    				<tr>
+	    					<th>Id</th>
+	    					<th>District</th>
+	    					<th></th>
+	    				</tr>
+	    			</thead>
+	    			<tr>
+	    				<td>New</td>
+	    				<td><input type="text" class="new" ng-model="new_district"></td>
+	    				<td><button ng-click='add_district(new_district)'>ADD</td>
+	    			</tr>
+	    			<tr ng-repeat="district in districts" ng-class="{active: district.district_id==district_id}" id='{{district.district_id}}'>
+	    				<td>{{district.district_id}}</td>
+	    				<td class="name">
+	    					<div class="no_edit_group" ng-click='get_areas(district.district_id,district.district)'>{{district.district}}</div>
+	    					<div class="edit_group"><input type="text" ng-model="edited_district" name="district" value='{{district.district}}'></div>
+	    				</td>
+	    				<td class="actions" width="60px">
+							<div class="no_edit_group btn-group btn-group-xs">
+	    						<button class="btn btn-default glyphicon glyphicon-pencil" ng-click='edit_district(district.district_id,district.district)'></button>
+	    						<button class="btn btn-default glyphicon glyphicon-trash" ng-click="delete_district(district.district_id)"></button>
+	    					</div>
+	    					<div class="edit_group btn-group btn-group-xs" >
+	    						<button class="btn btn-default glyphicon glyphicon-ok" ng-click='update_district(district.district_id,edited_district)'></button>
+	    						<button class="btn btn-default glyphicon glyphicon-remove" ng-click="cancel_edit()"></button>
+	    					</div>
+	    				</td>
+	    			</tr>
+	    		</table>
+	  		</div>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="panel panel-default">
+	  		<div class="panel-heading">
+	   			<h3 class="panel-title">Areas in {{district}}</h3>
+	  		</div>
+	  		<div class="panel-body">
+	  			<table class="table table-condensed table-hover" id="areas">
+	  				<thead>
+	    				<tr>
+	    					<th>Id</th>
+	    					<th>Area</th>
+	    					<th></th>
+	    				</tr>
+	    			</thead>
+	    			<tr>
+	    				<td>New</td>
+	    				<td><input type="text" class="new" ng-model="new_area"></td>
+	    				<td><button ng-click='add_area(new_area)'>ADD</td>
+	    			</tr>
+	    			<tr ng-repeat="area in areas" ng-class="{active: area.area_id==area_id}" id='{{area.area_id}}'>
+	    				<td>{{area.area_id}}</td>
+	    				<td class="name">
+	    					<div class="no_edit_group">{{area.area}}</div>
+	    					<div class="edit_group"><input type="text" ng-model="edited_area" name="area" value='{{area.area}}'></div>
+	    				</td>
+	    				<td class="actions" width="60px">
+							<div class="no_edit_group btn-group btn-group-xs">
+	    						<button class="btn btn-default glyphicon glyphicon-pencil" ng-click='edit_area(area.area_id,area.area)'></button>
+	    						<button class="btn btn-default glyphicon glyphicon-trash" ng-click="delete_area(area.area_id)"></button>
+	    					</div>
+	    					<div class="edit_group btn-group btn-group-xs" >
+	    						<button class="btn btn-default glyphicon glyphicon-ok" ng-click='update_area(area.area_id,edited_area)'></button>
+	    						<button class="btn btn-default glyphicon glyphicon-remove" ng-click="cancel_edit()"></button>
+	    					</div>
+	    				</td>
+	    			</tr>
+	    		</table>
+	    		
+	  		</div>
+		</div>
+	</div>
+</div>
+</div>
+
+<style>
+.edit_group{
+	display: none;
+}
+
+.panel-body{
+	padding:0px;
+}
+.panel-body table{
+	width:100%;
+}
+.panel{
+	border-radius: 0px;
+}
+td.name input, input.new{
+	width: 120px;
+	cursor: pointer;
+}
+tr td.name{
+	cursor: pointer;
+	text-transform: capitalize;
+}
+.gridStyle {
+	float: left;
+    border: 1px solid rgb(212,212,212);
+    width: 100%;
+    min-width: 200px;
+    min-height: 50px;
+    height: auto;
+    height: auto;
+} 
+.col-md-3{
+	padding: 0;
+}
+</style>

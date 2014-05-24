@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>TEST VERSION</title>
+</head>
+<body>
+	<button onclick="authenticate();"> post</button>
+	<button onclick="getUsers();"> get</button>
+	<button onclick="addUser();"> add</button>
+</body>
+<script src="../js/jquery-1.11.0.min.js"></script>
+<script>
+function authenticate() {
+	var user_data= {"username":"admin@gofindy.com","password":"admin123"};
+	$.ajax({
+		type: 'POST',
+		contentType: 'application/json',
+		url: 'http://localhost/gofindy.com/api/users/authenticate/',
+		data: JSON.stringify(user_data)
+	}).done(function(data){
+		console.log(data);
+	}).fail(function(){
+		alert("err");
+	});
+}
+function addUser(){
+	var user_data = {"username":"tedsfstussdfdsfser@ksd.com","password":"a","acc_type":"3"};
+	$.ajax({
+		type:'POST',
+		contentType: 'application/json',
+		url: 'http://localhost/gofindy/api/users/add/',
+		data: JSON.stringify(user_data)
+	}).done(function(data){
+		console.log(data);
+	}).fail(function(data){
+
+	});
+}
+function getUsers(){
+	$.ajax({
+		type:'GET',
+		contentType: 'application/json',
+		url: 'http://localhost/gofindy/api/users/'
+	}).done(function(data){
+		console.log(data);
+	}).fail(function(data){
+
+	});
+}
+
+</script>
+</html>
