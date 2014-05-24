@@ -20,6 +20,7 @@ function getLocalsearches(){
 	$no_of_pages = 0;
 	$no_of_rows = 0;
 	$conditions_params=['name','user_id','country_id','state_id','district_id','area_id','status'];
+	$conditions_params_2=['category_id','sub_category_id','feature_id','product_id'];
 	$conditions = array();
 	$query_condition='';
 	$app = Slim::getInstance();
@@ -33,7 +34,7 @@ function getLocalsearches(){
 			if(sizeof($searches) > 0){
 				$search_query = "(";
 				foreach($searches as $val){
-					$search_query = $search_query." localsearch.$param = '$val' OR";
+					$search_query = $search_query." l.$param = '$val' OR";
 				}
 				$search_query = substr($search_query, 0, -2);
 				$search_query = $search_query.') ';
@@ -41,18 +42,19 @@ function getLocalsearches(){
 			array_push($conditions,  $search_query);
 		}
 	}
-	if($app->request()->params('category_id')){
-		$searches = explode(",", $app->request()->params('category_id'));
+	foreach($conditions_params_2 as $param){
+		if($app->request()->params($param)){
+			$searches = explode(",", $app->request()->params($param));
 			if(sizeof($searches) > 0){
 				$search_query = "(";
 				foreach($searches as $val){
-					$search_query = $search_query." lc.category_id = '$val' OR";
+					$search_query = $search_query." $param = '$val' OR";
 				}
 				$search_query = substr($search_query, 0, -2);
 				$search_query = $search_query.') ';
 			}	
 			array_push($conditions,  $search_query);
-
+		}
 	}
 	if(sizeof($conditions) > 0){
 		$query_condition = " WHERE";
@@ -62,16 +64,26 @@ function getLocalsearches(){
 		$query_condition = substr($query_condition, 0, -4);
 	}
 	$offset = ($page - 1) * $limit;
-	$sql_1 = "SELECT COUNT(user_id) FROM localsearch 
-				INNER JOIN localsearch_x_categories lc USING(business_id)"
+	$sql_1 = "SELECT COUNT(DISTINCT business_id) FROM localsearch l
+				LEFT JOIN countries c ON c.country_id=l.country_id
+				LEFT JOIN states s ON s.state_id=l.state_id
+				LEFT JOIN districts d ON d.district_id=l.district_id
+				LEFT JOIN areas a ON a.area_id=l.area_id
+				INNER JOIN localsearch_x_categories USING(business_id)
+				INNER JOIN localsearch_x_sub_categories USING(business_id) 
+				INNER JOIN localsearch_x_features USING(business_id) 
+				INNER JOIN localsearch_x_products USING(business_id) "
 				.$query_condition;
 	// $sql_2 = "SELECT * FROM localsearch LEFT JOIN countries USING(country_id) LEFT JOIN states USING(state_id) LEFT JOIN districts USING(district_id) LEFT JOIN areas USING(area_id)".$query_condition." LIMIT :offset , :limit";
-	$sql_2 = "SELECT DISTINCT localsearch.* FROM localsearch 
-				LEFT JOIN countries USING(country_id)
-				LEFT JOIN states USING(state_id)
-				LEFT JOIN districts USING(district_id) 
-				LEFT JOIN areas USING(area_id)
-				INNER JOIN localsearch_x_categories lc USING(business_id) "
+	$sql_2 = "SELECT DISTINCT l.*,c.country,s.state,d.district,a.area FROM localsearch l 
+				LEFT JOIN countries c ON c.country_id=l.country_id
+				LEFT JOIN states s ON s.state_id=l.state_id
+				LEFT JOIN districts d ON d.district_id=l.district_id
+				LEFT JOIN areas a ON a.area_id=l.area_id
+				INNER JOIN localsearch_x_categories USING(business_id)
+				INNER JOIN localsearch_x_sub_categories USING(business_id) 
+				INNER JOIN localsearch_x_features USING(business_id) 
+				INNER JOIN localsearch_x_products USING(business_id) "
 				.$query_condition
 				." LIMIT :offset , :limit";
 	try {
@@ -117,8 +129,8 @@ function getLocalsearch($id){
         $stmt->execute();
         $data = $stmt->fetchObject();
         $data = get_object_vars($data);
-		$categories=getCategory($data['business_id']);
-		$sub_categories=getSubCategory($data['business_id']);
+		$categories=getCategories($data['business_id']);
+		$sub_categories=getSubCategories($data['business_id']);
 		$data["categories"]=$categories;
 		$data["sub_categories"]=$sub_categories;
         $db = null;
