@@ -19,7 +19,7 @@ function getLocalsearches(){
 	$limit=0;
 	$no_of_pages = 0;
 	$no_of_rows = 0;
-	$conditions_params=['name','user_id','country_id','state_id','district_id','status','area_id'];
+	$conditions_params=['name','user_id','country_id','state_id','district_id','area_id','status'];
 	$conditions = array();
 	$query_condition='';
 	$app = Slim::getInstance();
@@ -33,13 +33,26 @@ function getLocalsearches(){
 			if(sizeof($searches) > 0){
 				$search_query = "(";
 				foreach($searches as $val){
-					$search_query = $search_query." $param = '$val' OR";
+					$search_query = $search_query." localsearch.$param = '$val' OR";
 				}
 				$search_query = substr($search_query, 0, -2);
 				$search_query = $search_query.') ';
 			}	
 			array_push($conditions,  $search_query);
 		}
+	}
+	if($app->request()->params('category_id')){
+		$searches = explode(",", $app->request()->params('category_id'));
+			if(sizeof($searches) > 0){
+				$search_query = "(";
+				foreach($searches as $val){
+					$search_query = $search_query." lc.category_id = '$val' OR";
+				}
+				$search_query = substr($search_query, 0, -2);
+				$search_query = $search_query.') ';
+			}	
+			array_push($conditions,  $search_query);
+
 	}
 	if(sizeof($conditions) > 0){
 		$query_condition = " WHERE";
@@ -49,10 +62,18 @@ function getLocalsearches(){
 		$query_condition = substr($query_condition, 0, -4);
 	}
 	$offset = ($page - 1) * $limit;
-	$sql_1 = "SELECT COUNT(user_id) FROM localsearch".$query_condition;
-	$sql_2 = "SELECT * FROM localsearch LEFT JOIN countries USING(country_id) LEFT JOIN states USING(state_id) LEFT JOIN districts USING(district_id) LEFT JOIN areas USING(area_id) ".$query_condition." LIMIT :offset , :limit";
-	//$sql_2 = "SELECT * FROM localsearch LEFT JOIN countries USING(country_id) ".$query_condition." LIMIT :offset , :limit";
-	//echo $sql_2;
+	$sql_1 = "SELECT COUNT(user_id) FROM localsearch 
+				INNER JOIN localsearch_x_categories lc USING(business_id)"
+				.$query_condition;
+	// $sql_2 = "SELECT * FROM localsearch LEFT JOIN countries USING(country_id) LEFT JOIN states USING(state_id) LEFT JOIN districts USING(district_id) LEFT JOIN areas USING(area_id)".$query_condition." LIMIT :offset , :limit";
+	$sql_2 = "SELECT DISTINCT localsearch.* FROM localsearch 
+				LEFT JOIN countries USING(country_id)
+				LEFT JOIN states USING(state_id)
+				LEFT JOIN districts USING(district_id) 
+				LEFT JOIN areas USING(area_id)
+				INNER JOIN localsearch_x_categories lc USING(business_id) "
+				.$query_condition
+				." LIMIT :offset , :limit";
 	try {
 		$db = getConnection();
 		$stmt = $db->query($sql_1);  
