@@ -13,3 +13,5 @@ RewriteRule ^roles(.+)?$ roles.php
 RewriteRule ^locations(.+)?$ locations.php 
 RewriteRule ^categories(.+)?$ categories.php 
 RewriteRule ^localsearch(.+)?$ localsearch.php 
+RewriteRule ^loc_features(.+)?$ loc_features.php 
+RewriteRule ^loc_products(.+)?$ loc_products.php 

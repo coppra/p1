@@ -71,10 +71,14 @@ function getLocalsearches(){
 		// $data =  (array) $data;
 		foreach($data as $key => $value){
 			$data[$key] = get_object_vars($data[$key]);
-			$categories=getCategory($value->business_id);
-			$sub_categories=getSubCategory($value->business_id);
+			$categories=getCategories($value->business_id);
+			$sub_categories=getSubCategories($value->business_id);
+			$features=getFeatures($value->business_id);
+			$products=getProducts($value->business_id);
 			$data[$key]["categories"]=$categories;
 			$data[$key]["sub_categories"]=$sub_categories;
+			$data[$key]["features"]=$features;
+			$data[$key]["products"]=$products;
 		}
 			// print_r($data);
 		$db = null;
@@ -133,15 +137,19 @@ function addLocalsearch(){
         $data->business_id = $db->lastInsertId();
         $db = null;
         if(sizeof($data->categories))
-        	addCategory($data->business_id,$data->categories);
+        	addCategories($data->business_id,$data->categories);
         if(sizeof($data->sub_categories))
-        	addSubCategory($data->business_id,$data->sub_categories);
+        	addSubCategories($data->business_id,$data->sub_categories);
+        if(sizeof($data->features))
+        	addFeatures($data->business_id,$data->features);
+        if(sizeof($data->products))
+        	addProducts($data->business_id,$data->products);
         echo json_encode($data);
     } catch(PDOException $e) {
         echo '{"error":{"text":'. $e->getMessage() .'}}';
     }
 }
-function addCategory($business_id,$category_ids){
+function addCategories($business_id,$category_ids){
 	$value='';
 	foreach($category_ids as $category_id){
     	$value = $value."($business_id,$category_id),";
@@ -160,7 +168,7 @@ function addCategory($business_id,$category_ids){
         echo '{"error":{"text":'. $e->getMessage() .'}}';
     }
 }
-function addSubCategory($business_id,$sub_category_ids){
+function addSubCategories($business_id,$sub_category_ids){
 	$value='';
 	foreach($sub_category_ids as $sub_category_id){
     	$value = $value."($business_id,$sub_category_id),";
@@ -179,7 +187,45 @@ function addSubCategory($business_id,$sub_category_ids){
         echo '{"error":{"text":'. $e->getMessage() .'}}';
     }
 }
-function getCategory($business_id){
+function addFeatures($business_id,$feature_ids){
+	$value='';
+	foreach($feature_ids as $feature_id){
+    	$value = $value."($business_id,$feature_id),";
+    }
+    if($value=='')
+    	return;
+    $value = substr($value, 0, -1);
+	$sql="INSERT INTO localsearch_x_features (business_id,feature_id) VALUES".$value;
+	try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+    	$stmt->execute();
+        $db = null;
+        //echo json_encode($data);
+    } catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
+function addProducts($business_id,$product_ids){
+	$value='';
+	foreach($product_ids as $product_id){
+    	$value = $value."($business_id,$product_id),";
+    }
+    if($value=='')
+    	return;
+    $value = substr($value, 0, -1);
+	$sql="INSERT INTO localsearch_x_products (business_id,product_id) VALUES".$value;
+	try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+    	$stmt->execute();
+        $db = null;
+        //echo json_encode($data);
+    } catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
+function getCategories($business_id){
 	$sql="SELECT loc_categories.category_id,loc_categories.category FROM loc_categories INNER JOIN localsearch_x_categories USING(category_id) WHERE localsearch_x_categories.business_id=:id";
 	try{
 		$db = getConnection();
@@ -194,8 +240,39 @@ function getCategory($business_id){
         echo '{"error":{"text":'. $e->getMessage() .'}}';
     }
 }
-function getSubCategory($business_id){
+function getSubCategories($business_id){
 	$sql="SELECT loc_sub_categories.sub_category_id,loc_sub_categories.sub_category FROM loc_sub_categories INNER JOIN localsearch_x_sub_categories USING(sub_category_id) WHERE localsearch_x_sub_categories.business_id=:id";
+	try{
+		$db = getConnection();
+		$stmt = $db->prepare($sql);
+        $stmt->bindParam("id", $business_id);
+        $stmt->execute();
+       	$data = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $db = null;
+        return $data;
+
+	} catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
+function getFeatures($business_id){
+	$sql="SELECT loc_features.feature_id,loc_features.feature FROM loc_features INNER JOIN localsearch_x_features USING(feature_id) WHERE localsearch_x_features.business_id=:id";
+	try{
+		$db = getConnection();
+		$stmt = $db->prepare($sql);
+        $stmt->bindParam("id", $business_id);
+        $stmt->execute();
+       	$data = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $db = null;
+        return $data;
+
+	} catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
+
+function getProducts($business_id){
+	$sql="SELECT loc_products.product_id,loc_products.product FROM loc_products INNER JOIN localsearch_x_products USING(product_id) WHERE localsearch_x_products.business_id=:id";
 	try{
 		$db = getConnection();
 		$stmt = $db->prepare($sql);
@@ -230,5 +307,4 @@ function searchLocalsearch($string){
     //echo json_encode($results);
     echo '{"no_of_results":'.sizeof($results).',"no_of_pages":'.'1'.',"results": ' . json_encode($results) . '}';
 }
-
 ?>
