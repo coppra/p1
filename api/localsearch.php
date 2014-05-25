@@ -9,6 +9,8 @@ $app->post('/localsearch/','addLocalsearch');
 $app->post('/localsearch/:id','updateLocalsearch');
 $app->delete('/localsearch/:id','deleteLocalsearch');
 
+$app->post('/localsearch/rating/','updateRating');
+
 $app->get('/localsearch/search/:id','searchLocalsearch');
 
 
@@ -142,7 +144,7 @@ function getLocalsearch($id){
 function addLocalsearch(){
 	$request = Slim::getInstance()->request();
 	$data = json_decode($request->getBody());
-	$sql = "INSERT INTO localsearch (name,unique_name,caption,business_type,user_id,area_id,district_id,state_id,country_id,lat,lng,phone1,phone2,email,website,working_hours,established,description,status,priority) VALUES(:name,:unique_name,:caption,:business_type,:user_id,:area_id,:district_id,:state_id,:country_id,:lat,:lng,:phone1,:phone2,:email,:website,:working_hours,:established,:description,:status,:priority)";
+	$sql = "INSERT INTO localsearch (name,unique_name,caption,business_type,user_id,address_line_1,address_line_2,area_id,district_id,state_id,country_id,lat,lng,phone1,phone2,email,website,working_hours,established,description,status,priority) VALUES(:name,:unique_name,:caption,:business_type,:user_id,:address_line_1,:address_line_2,:area_id,:district_id,:state_id,:country_id,:lat,:lng,:phone1,:phone2,:email,:website,:working_hours,:established,:description,:status,:priority)";
 	try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -151,6 +153,8 @@ function addLocalsearch(){
         $stmt->bindParam("caption", $data->caption);
         $stmt->bindParam("business_type", $data->business_type);
         $stmt->bindParam("user_id", $data->user_id);
+        $stmt->bindParam("address_line_1", $data->address_line_1);
+        $stmt->bindParam("address_line_2", $data->address_line_2);
         $stmt->bindParam("area_id", $data->area_id);
         $stmt->bindParam("district_id", $data->district_id);
         $stmt->bindParam("state_id", $data->state_id);
@@ -320,15 +324,85 @@ function getProducts($business_id){
     }
 }
 
+function updateRating(){
+	$request = Slim::getInstance()->request();
+	$data = json_decode($request->getBody());
+	$sql="SELECT rating,no_of_ratings FROM localsearch WHERE business_id=:id";
+	try{
+		$db = getConnection();
+		$stmt = $db->prepare($sql);
+        $stmt->bindParam("id", $data->business_id);
+        $stmt->execute();
+        $result = $stmt->fetchObject();
+        if(!$result){
+        	 echo json_encode(array('error'=>"Listing not found"));
+        	return;
+        }
+        if($data->rating > 5)
+        	$data->rating =5;
+        else if($data->rating < 0)
+        	$data->rating =0;
+        $new_rating = round((($result->rating * $result->no_of_ratings) + $data->rating)/($result->no_of_ratings + 1),1);
+        $new_count = $result->no_of_ratings + 1;
+        $db = null;
+        $sql_2 = "UPDATE localsearch SET rating=:rating,no_of_ratings=:no_of_ratings WHERE business_id=:id";
+		try {
+    	    $db = getConnection();
+    	    $stmt = $db->prepare($sql_2);
+    	    $stmt->bindParam("rating", $new_rating);
+    	    $stmt->bindParam("no_of_ratings", $new_count);
+    	    $stmt->bindParam("id", $data->business_id);
+    		$stmt->execute();
+    	    $db = null;
+    	    echo json_encode(array('rating'=>$new_rating));
+    	} catch(PDOException $e) {
+    	    echo '{"error":{"text":'. $e->getMessage() .'}}';
+    	}
+	} catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
 function searchLocalsearch($string){
 	$words = explode(" ", $string);
+	$preposition=array(",", "'", "a", "and", "about", "above", "across", "after", "against", "along", "among", "around", "at", "before", "behind", "below", "beneath", "beside", "between", "beyond", "but", "by", "despite", "down", "during", "except", "for", "from", "in", "inside", "into", "like", "near", "of", "off", "on", "onto", "out", "outside", "over", "past", "since", "through", "throughout", "till", "to", "toward", "under", "underneath", "until", "up", "upon", "with", "within", "without");
+	foreach ($preposition as $del_val) {
+		if(($key = array_search($del_val, $words)) !== false) {
+    		unset($words[$key]);
+		}
+	}
 	$string="%".$string."%";
 	$results = array();
-	$sql = "SELECT * FROM localsearch WHERE name LIKE :string";
+	/*$sql = "SELECT * FROM localsearch WHERE name LIKE :string OR unique_name LIKE :string OR caption LIKE :string OR website LIKE :string OR description LIKE :string ";
 	try{
 		$db = getConnection();
 		$stmt = $db->prepare($sql);
         $stmt->bindParam("string", $string);
+        $stmt->execute();
+       	$data = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $db = null;
+       	$results=array_merge($results, $data);
+
+	} catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }*/
+    $condition='';
+    $x=0;
+    foreach($words as $word){
+		$x++;
+		if($x==1)
+			$condition .="WHERE (name LIKE '%$word%' OR unique_name LIKE '%$word%' OR caption LIKE '%$word%' OR website LIKE '%$word%' OR description LIKE '%$word%' OR address_line_1 LIKE '%$word%' OR address_line_2 LIKE '%$word%' OR c.country LIKE '%$word%' OR s.state LIKE '%$word%' OR d.district LIKE '%$word%' OR a.area LIKE '%$word%')";
+		else
+			$condition .="AND (name LIKE '%$word%' OR unique_name LIKE '%$word%' OR caption LIKE '%$word%' OR website LIKE '%$word%' OR description LIKE '%$word%' OR address_line_1 LIKE '%$word%' OR address_line_2 LIKE '%$word%') OR c.country LIKE '%$word%' OR s.state LIKE '%$word%' OR d.district LIKE '%$word%' OR a.area LIKE '%$word%'";
+	}
+	$sql = "SELECT * FROM localsearch l 
+				LEFT JOIN countries c ON c.country_id=l.country_id
+				LEFT JOIN states s ON s.state_id=l.state_id
+				LEFT JOIN districts d ON d.district_id=l.district_id
+				LEFT JOIN areas a ON a.area_id=l.area_id
+				 ".$condition;
+	try{
+		$db = getConnection();
+		$stmt = $db->prepare($sql);
         $stmt->execute();
        	$data = $stmt->fetchAll(PDO::FETCH_OBJ);
         $db = null;
