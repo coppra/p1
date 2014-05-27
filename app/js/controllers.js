@@ -351,7 +351,172 @@ appControllers.controller('LocationCtrl',['$scope','$http','Country','State','Di
         }
     }
 }])
+appControllers.controller('LocCategoryCtrl',['$scope','Country','Loc_category','Loc_sub_category','Loc_feature','Loc_product',function($scope,Country,Loc_category,Loc_sub_category,Loc_feature,Loc_product){
+    $scope.new={};
+    $scope.categories=Loc_category.query();
+    $scope.edit={category_id:"",category:""};
+    $scope.get_categories=function(){
+        $scope.categories=Loc_category.query();
+    }
+    $scope.add_category=function(category,kind){
+        if(category){
+            var data={'category':category,'kind':kind};
+            Loc_category.save(data,function(data){
+                $scope.new.category='';
+                $scope.categories.push(data);
+            })
+        }
+    }
+    $scope.update_category = function(category_id,category){
+        if(category_id){
+            var data = Loc_category.get({},{'Id':category_id});
+            data.category=category;
+            data.$save(function(data){
+                $scope.get_categories();
+            });
+        }
+    }
+    $scope.delete_category=function(category_id){
+        if(confirm("Delete category no."+category_id+"?")){
+            var data={'category_id':category_id};
+            Loc_category.delete({},{'Id':category_id},function(){
+                $scope.get_categories();
+            });
+        }
+    }
+    $scope.reset_edit=function(){
+        $scope.edit={'category_id':'','category':''};
+    }
+    $scope.$watch('edit.category_id', function (newVal, oldVal) {
+        $scope.sub_categories=[];
+        if(newVal){
+            $scope.get_sub_categories(newVal);
+            $scope.get_features(newVal);
+            $scope.get_products(newVal);
+        }
+    });
+    //Sub categories
+    $scope.new_sub={};
+    $scope.sub_categories=[];
+    $scope.edit_sub={'sub_category_id':'','sub_category':''};
+    $scope.get_sub_categories=function(category_id){
+        $scope.sub_categories=Loc_sub_category.query({'category_id':category_id});
+    }
+    $scope.add_sub_category=function(sub_category,category_id){
+        if(sub_category && category_id){
+            var data={'sub_category':sub_category,'category_id':category_id};
+            Loc_sub_category.save(data,function(data){
+                $scope.sub_categories.push(data);
+                $scope.new_sub.sub_category='';
+            })
+            
+        }
+    }
+    $scope.update_sub_category = function(sub_category_id,sub_category){
+        if(sub_category_id){
+            var data = Loc_sub_category.get({},{'Id':sub_category_id});
+            data.sub_category=sub_category;
+            data.$save(function(data){
+                $scope.get_sub_categories($scope.edit.category_id);
+                $scope.reset_edit_sub();
+            });
+        }
+    }
+    $scope.delete_sub_category=function(sub_category_id){
+        if(confirm("Delete category no."+sub_category_id+"?")){
+            var data={'sub_category_id':sub_category_id};
+            Loc_sub_category.delete({},{'Id':sub_category_id},function(){
+                $scope.get_sub_categories($scope.edit.category_id);
+                $scope.reset_edit_sub();
+            });
+        }
+    }
+    $scope.reset_edit_sub=function(){
+        $scope.edit_sub={sub_category_id:'',sub_category:''};
+    }
 
+    //Features
+    $scope.new_feature={};
+    $scope.features=[];
+    $scope.edit_feature={'feature_id':'','feature':''};
+    $scope.get_features=function(category_id){
+        $scope.features=Loc_feature.query({'category_id':category_id});
+    }
+    $scope.add_feature=function(feature,category_id){
+        if(feature && category_id){
+            var data={'feature':feature,'category_id':category_id};
+            Loc_feature.save(data,function(data){
+                $scope.features.push(data);
+                $scope.new_feature.feature='';
+            })
+            
+        }
+    }
+    $scope.update_feature = function(feature_id,feature){
+        if(feature_id){
+            var data = Loc_feature.get({},{'Id':feature_id});
+            data.feature=feature;
+            data.$save(function(data){
+                $scope.get_features($scope.edit.category_id);
+                $scope.reset_edit_feature();
+            });
+        }
+    }
+    $scope.delete_feature=function(feature_id){
+        if(confirm("Delete feature no."+feature_id+"?")){
+            var data={'feature_id':feature_id};
+            Loc_feature.delete({},{'Id':feature_id},function(){
+                $scope.get_features($scope.edit.category_id);
+                $scope.reset_edit_feature();
+            });
+        }
+    }
+    $scope.reset_edit_feature=function(){
+        $scope.edit_feature={feature_id:'',feature:''};
+    }
+
+    //Products
+    $scope.new_product={};
+    $scope.products=[];
+    $scope.edit_product={'feature_id':'','feature':''};
+    $scope.get_products=function(category_id){
+        $scope.products=Loc_product.query({'category_id':category_id});
+    }
+    $scope.add_product=function(product,category_id){
+        if(product && category_id){
+            var data={'product':product,'category_id':category_id};
+            Loc_product.save(data,function(data){
+                console.log(data);
+                $scope.products.push(data);
+                $scope.new_product.product='';
+            });
+            
+        }
+    }
+    $scope.update_product = function(product_id,product){
+        if(product_id){
+            var data = Loc_product.get({},{'Id':product_id});
+            data.product=product;
+            data.$save(function(data){
+                $scope.get_products($scope.edit.category_id);
+                $scope.reset_edit_product();
+            });
+        }
+    }
+    $scope.delete_product=function(product_id){
+        if(confirm("Delete product no."+product_id+"?")){
+            var data={'product_id':product_id};
+            Loc_product.delete({},{'Id':product_id},function(){
+                $scope.get_products($scope.edit.category_id);
+                $scope.reset_edit_product();
+            });
+        }
+    }
+    $scope.reset_edit_product=function(){
+        $scope.edit_product={product_id:'',product:''};
+    }
+
+}])
 appControllers.controller('AddUserCtrl',['$scope','$http','User','Country','State','District','Area',function($scope,$http,User,Country,State,District,Area){
     $scope.user = {
                     'email':'',

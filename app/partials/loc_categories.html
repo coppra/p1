@@ -1,0 +1,140 @@
+<div class="row">
+	<div class="col-sm-6">
+		<tabset>
+  		  	<tab heading="Categories">
+  		  		<div id="new_cat" class="cat_head" ng-hide="edit.category_id">
+  		  			<div class="input-group">
+  		  				<input type="text" class="form-control" ng-model="new.category" placeholder="Add category here">
+  		  				<div class="input-group-btn">
+  		  					<button class="btn btn-default" title="Add Business category" ng-click="add_category(new.category,'business');">+ Business</button>
+  		  					<button class="btn btn-default" title="Add Service category" ng-click="add_category(new.category,'service');">+ Service</button>
+  		  				</div>
+  		  			</div>
+  		  		</div>
+  		  		<div id="edit_cat" class="cat_head" ng-show="edit.category_id">
+	    			<div class="input-group">
+  						<input type="hidden" ng-model="edit.category_id">
+  		  				<input type="text" ng-model="edit.category" class="form-control">
+  						<div class="input-group-btn">
+    						<button class="btn btn-default" ng-click="update_category(edit.category_id,edit.category);"><span class="glyphicon glyphicon-pencil"></span></button>
+  							<button class="btn btn-default" ng-click="delete_category(edit.category_id);" ng-click="cancel_edit();"><span class=" glyphicon glyphicon-trash"></span></button>
+  							<button class="btn btn-default" ng-click="reset_edit();"><span class="glyphicon glyphicon-refresh"></span></button>
+  						</div>
+					</div>
+  		  		</div>
+  		  		<ul class="categories">
+  		  			<li class="category" ng-repeat="category in categories" ng-click="edit.category_id=category.category_id; edit.category=category.category" ng-class="{'business':category.kind=='business'}">
+  		  			<span class="id">{{category.category_id}}</span>. {{category.category}}
+  		  			</li>
+  		  		</ul>
+  		  	</tab>
+  		</tabset>
+	</div>
+	<div class="col-sm-6">
+  		<tabset justified="true">
+  		  	<tab heading="Sub-categories">
+  		  		<div id="new_cat" class="cat_head" ng-hide="edit_sub.sub_category_id">
+  		  			<div class="input-group">
+  		  				<input type="text" class="form-control" ng-model="new_sub.sub_category" placeholder="Add sub-categoryy here">
+  		  				<div class="input-group-btn">
+  		  					<button class="btn btn-default" ng-disabled="!edit.category_id" ng-click="add_sub_category(new_sub.sub_category,edit.category_id);">+ Add</button>
+  		  				</div>
+  		  			</div>
+  		  		</div>
+  		  		<div id="edit_cat" class="cat_head" ng-show="edit_sub.sub_category_id">
+	    			<div class="input-group">
+  						<input type="hidden" ng-model="edit_sub.sub_category_id">
+  		  				<input type="text" ng-model="edit_sub.sub_category" class="form-control">
+  						<div class="input-group-btn">
+    						<button class="btn btn-default" ng-click="update_sub_category(edit_sub.sub_category_id,edit_sub.sub_category);"><span class="glyphicon glyphicon-pencil"></span></button>
+  							<button class="btn btn-default" ng-click="delete_sub_category(edit_sub.sub_category_id);"><span class=" glyphicon glyphicon-trash"></span></button>
+  							<button class="btn btn-default" ng-click="reset_edit_sub();"><span class="glyphicon glyphicon-refresh"></span></button>
+  						</div>
+					</div>
+  		  		</div>
+  		  		<ul class="categories">
+  		  			<li class="category" ng-repeat="sub_category in sub_categories" ng-click="edit_sub.sub_category_id=sub_category.sub_category_id; edit_sub.sub_category=sub_category.sub_category">
+  		  			<span class="id">{{sub_category.sub_category_id}}</span>. {{sub_category.sub_category}}
+  		  			</li>
+  		  		</ul>
+  		  	</tab>
+  		  	<tab heading="Features">
+  		  		<div id="new_cat" class="cat_head" ng-hide="edit_feature.feature_id">
+                    <div class="input-group">
+                        <input type="text" class="form-control" ng-model="new_feature.feature" placeholder="Add feature here">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" ng-disabled="!edit.category_id" ng-click="add_feature(new_feature.feature,edit.category_id);">+ Add</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="edit_cat" class="cat_head" ng-show="edit_feature.feature_id">
+                    <div class="input-group">
+                        <input type="hidden" ng-model="edit_feature.feature_id">
+                        <input type="text" ng-model="edit_feature.feature" class="form-control">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" ng-click="update_feature(edit_feature.feature_id,edit_feature.feature);"><span class="glyphicon glyphicon-pencil"></span></button>
+                            <button class="btn btn-default" ng-click="delete_feature(edit_feature.feature_id);"><span class=" glyphicon glyphicon-trash"></span></button>
+                            <button class="btn btn-default" ng-click="reset_edit_feature();"><span class="glyphicon glyphicon-refresh"></span></button>
+                        </div>
+                    </div>
+                </div>
+                <ul class="categories">
+                    <li class="category" ng-repeat="feature in features" ng-click="edit_feature.feature_id=feature.feature_id; edit_feature.feature=feature.feature">
+                    <span class="id">{{feature.feature_id}}</span>. {{feature.feature}}
+                    </li>
+                </ul>
+  		  	</tab>
+  		  	<tab heading="Products">
+  		  		<div id="new_cat" class="cat_head" ng-hide="edit_product.product_id">
+                    <div class="input-group">
+                        <input type="text" class="form-control" ng-model="new_product.product" placeholder="Add product here">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" ng-disabled="!edit.category_id" ng-click="add_product(new_product.product,edit.category_id);">+ Add</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="edit_cat" class="cat_head" ng-show="edit_product.product_id">
+                    <div class="input-group">
+                        <input type="hidden" ng-model="edit_product.product_id">
+                        <input type="text" ng-model="edit_product.product" class="form-control">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" ng-click="update_product(edit_product.product_id,edit_product.product);"><span class="glyphicon glyphicon-pencil"></span></button>
+                            <button class="btn btn-default" ng-click="delete_product(edit_product.product_id);"><span class=" glyphicon glyphicon-trash"></span></button>
+                            <button class="btn btn-default" ng-click="reset_edit_product();"><span class="glyphicon glyphicon-refresh"></span></button>
+                        </div>
+                    </div>
+                </div>
+                <ul class="categories">
+                    <li class="category" ng-repeat="product in products" ng-click="edit_product.product_id=product.product_id; edit_product.product=product.product">
+                    <span class="id">{{product.product_id}}</span>. {{product.product}}
+                    </li>
+                </ul>
+  		  	</tab>
+  		</tabset>
+	</div>
+</div>
+<style>
+	ul.categories{
+		margin: 0px;
+		padding: 0px;
+	}
+	ul.categories li{
+		display: block;
+		float: left;
+		list-style: none;
+		width: 30%;
+		min-width: 200px;
+		margin: 5px;
+		padding:5px;
+		border: #ccc thin solid;
+		border-radius: 2px;
+		cursor: pointer;
+		text-transform: capitalize;
+	}
+	.business{
+		background-color: #ededed;
+	}
+	.id{
+		color: #999;
+	}
+</style>

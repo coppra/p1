@@ -10,8 +10,19 @@ $app->post('/loc_features/:id','updateLocFeature');
 $app->delete('/loc_features/:id','deleteLocFeature');
 
 function getLocFeatures(){
-	// add filter for business type
-	$sql = "SELECT * FROM loc_features";
+    $condition = '';
+    $app = new Slim();
+    if($app->request()->params('category_id')){
+        $category_ids = explode(",",$app->request()->params('category_id'));
+        if(sizeof($category_ids) > 0){
+            $condition = "  WHERE";
+            foreach($category_ids as $val){
+                $condition = $condition." category_id LIKE '$val' OR";
+            }
+            $condition = substr($condition, 0, -3);
+        }
+    }
+	$sql = "SELECT * FROM loc_features ".$condition;
 	try{
 		$db = getConnection();
         $stmt= $db->query($sql);
@@ -23,7 +34,7 @@ function getLocFeatures(){
     }
 }
 function getLocFeature($id){
-	$sql = "SELECT * FROM loc_features WHERE feautre_id = :id";
+	$sql = "SELECT * FROM loc_features WHERE feature_id = :id";
 	try{
 		$db = getConnection();
         $stmt = $db->prepare($sql);
@@ -57,13 +68,11 @@ function addLocFeature(){
 function updateLocFeature($id){
 	$request = Slim::getInstance()->request();
 	$data = json_decode($request->getBody());
-	$sql = "UPDATE loc_features SET feature=:feature,category_id=:category_id,priority=:priority WHERE feature_id=:id";
+	$sql = "UPDATE loc_features SET feature=:feature WHERE feature_id=:id";
 	try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("feature", $data->feature);
-        $stmt->bindParam("category_id", $data->category_id);
-        $stmt->bindParam("priority", $data->priority);
         $stmt->bindParam("id", $id);
     	$stmt->execute();
         $data->feature_id = $id;

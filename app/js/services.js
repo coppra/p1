@@ -35,7 +35,7 @@ appServices.factory('Auth', function($http, $cookieStore){
             }).error(error);
         },
         login: function(user, success, error) {
-            $http.post('http://localhost/gofindy.com/api/users/authenticate/',user).success(function(data){
+            $http.post('../api/users/authenticate/',user).success(function(data){
                 console.log(data);
                 changeUser(data);
                 success(data);
@@ -78,31 +78,59 @@ appServices.factory('Role',['$resource',
 ]);
 appServices.factory('Country',['$resource',
 	function($resource){
-		return $resource('http://localhost/gofindy.com/api/locations/country/:Id?', {Id:"@Id"}, {
+		return $resource('../api/locations/country/:Id?', {Id:"@Id"}, {
       		query: {method:'GET', params:{}, isArray:true}
     	});
 	}
 ]);
 appServices.factory('State',['$resource',
 	function($resource){
-		return $resource('http://localhost/gofindy.com/api/locations/state/:Id?', {Id:"@Id"}, {
+		return $resource('../api/locations/state/:Id?', {Id:"@Id"}, {
       		query : {method:'GET','params':{},isArray:true}
     	});
 	}
 ]);
 appServices.factory('District',['$resource',
 	function($resource){
-		return $resource('http://localhost/gofindy.com/api/locations/district/:Id?', {Id:"@Id"}, {
+		return $resource('../locations/district/:Id?', {Id:"@Id"}, {
       		query: {method:'GET', params:{}, isArray:true}
     	});
 	}
 ]);
 appServices.factory('Area',['$resource',
 	function($resource){
-		return $resource('http://localhost/gofindy.com/api/locations/area/:Id?', {Id:"@Id"}, {
+		return $resource('../api/locations/area/:Id?', {Id:"@Id"}, {
       		query: {method:'GET', params:{}, isArray:true}
     	});
 	}
 ]);
 
+appServices.factory('Loc_category',['$resource',
+    function($resource){
+        return $resource('../api/categories/loc/:Id?', {Id:"@Id"}, {
+            query: {method:'GET', params:{}, isArray:true},
+        });
+    }
+]);
+appServices.factory('Loc_sub_category',['$resource',
+    function($resource){
+        return $resource('../api/categories/loc/sub/:Id?', {Id:"@Id"}, {
+            query: {method:'GET', params:{}, isArray:true},
+        });
+    }
+]);
+appServices.factory('Loc_feature',['$resource',
+    function($resource){
+        return $resource('../api/loc_features/:Id?', {Id:"@Id"}, {
+            query: {method:'GET', params:{}, isArray:true},
+        });
+    }
+]);
+appServices.factory('Loc_product',['$resource',
+    function($resource){
+        return $resource('../api/loc_products/:Id?', {Id:"@Id"}, {
+            query: {method:'GET', params:{}, isArray:true},
+        });
+    }
+]);
 

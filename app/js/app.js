@@ -5,6 +5,7 @@
 var cpanelApp = angular.module('cpanelApp', [
   'ngCookies',
   'ui.router',
+  'ui.bootstrap',
   'appControllers',
   'appFilters',
   'appServices',
@@ -103,6 +104,11 @@ cpanelApp.config(['$stateProvider', '$urlRouterProvider','$locationProvider','$h
         .state('admin.editUser.business',{
             url:'/business/',
             templateUrl:'./partials/editbusiness.html',
+        })
+        .state('admin.loc_categories',{
+            url:'/loc_categories/',
+            templateUrl:'./partials/loc_categories.html',
+            controller:'LocCategoryCtrl'
         });
   //  $urlRouterProvider.otherwise('/404');
     // FIX for trailing slashes. Gracefully "borrowed" from https://github.com/angular-ui/ui-router/issues/50

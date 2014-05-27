@@ -10,8 +10,19 @@ $app->post('/loc_products/:id','updateLocProduct');
 $app->delete('/loc_products/:id','deleteLocProduct');
 
 function getLocProducts(){
-	// add filter for business type
-	$sql = "SELECT * FROM loc_products";
+    $condition = '';
+    $app = new Slim();
+    if($app->request()->params('category_id')){
+        $category_ids = explode(",",$app->request()->params('category_id'));
+        if(sizeof($category_ids) > 0){
+            $condition = "  WHERE";
+            foreach($category_ids as $val){
+                $condition = $condition." category_id LIKE '$val' OR";
+            }
+            $condition = substr($condition, 0, -3);
+        }
+    }
+	$sql = "SELECT * FROM loc_products".$condition;
 	try{
 		$db = getConnection();
         $stmt= $db->query($sql);
@@ -57,13 +68,11 @@ function addLocProduct(){
 function updateLocProduct($id){
 	$request = Slim::getInstance()->request();
 	$data = json_decode($request->getBody());
-	$sql = "UPDATE loc_products SET product=:product,category_id=:category_id,priority=:priority WHERE product_id=:id";
+	$sql = "UPDATE loc_products SET product=:product WHERE product_id=:id";
 	try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("product", $data->product);
-        $stmt->bindParam("category_id", $data->category_id);
-        $stmt->bindParam("priority", $data->priority);
         $stmt->bindParam("id", $id);
     	$stmt->execute();
         $data->product_id = $id;
