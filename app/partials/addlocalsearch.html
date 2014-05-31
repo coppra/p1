@@ -1,0 +1,110 @@
+<tabset>
+  	<tab heading="Details">
+  		<div class="row">
+  			<div class="col-sm-4">
+  				Business Name
+  				<input type="text" class="form-control" ng-model="localsearch.name" required>
+  				Caption 
+  				<input type="text" class="form-control" ng-model="localsearch.caption">
+  				 Unique name
+  				<input type="text" class="form-control" ng-model="localsearch.unique_name" required>
+  				 Business type
+  				 <select name="" id="" class="form-control" ng-model="localsearch.business_type" required>
+  				 	<option value="business">Business</option>
+  				 	<option value="service">Service</option>
+  				 </select>
+  				 Established in
+  				 <input type="text" class="form-control" ng-model="localsearch.established" placeholder="eg. 1995">
+  				 Owner Account Id
+  				<input type="text" class="form-control" ng-model="localsearch.user_id" required>
+  				 
+  			</div>
+  			<div class="col-sm-4">
+  				Phone number
+  				<input type="text" class="form-control" ng-model="localsearch.phone1">
+  				 Alternate phone number
+  				<input type="text" class="form-control" ng-model="localsearch.phone2">
+  				Email Id
+  				<input type="text" class="form-control" ng-model="localsearch.email">
+  				Website
+  				<input type="text" class="form-control" ng-model="localsearch.website">
+  				Facebook Url
+  				<input type="text" class="form-control" ng-model="localsearch.fb">
+  				Google+ Url
+  				<input type="text" class="form-control" ng-model="localsearch.gp">
+  			</div>
+  			<div class="col-sm-4">
+  				Categories
+  				<select name="" id="" class="form-control"></select>
+  				Sub-categories
+  				<select name="" id="" class="form-control"></select>
+  				Features
+  				<select name="" id="" class="form-control"></select>
+  				Products
+  				<select name="" id="" class="form-control"></select>
+  				Logo
+  				<input type="file" class="form-control">
+  				Cover photo
+  				<input type="file" class="form-control">
+  			</div>
+  		</div>
+  		
+  	</tab>
+  	<tab heading="Address">
+  		<div class="row">
+  			<div class="col-sm-4">
+  				Country
+  				<select ng-model="country" class="form-control" ng-options="country.country for country in countries"></select>
+				State
+				<select ng-model="state" class="form-control" ng-options="state.state for state in states"></select>
+				District
+				<select ng-model="district" class="form-control" ng-options="district.district for district in districts"></select>
+				Area
+				<select ng-model="area" class="form-control" ng-options="area.area for area in areas"></select>
+  				Address line 1
+  				<input type="text" class="form-control">
+  				Address line 2
+  				<input type="text" class="form-control">
+  				{{country}}
+  			</div>
+  			<div class="col-sm-8">
+  				<div class="row">
+  					<div class="col-sm-6">
+  						Latitude
+  						<input type="text" class="form-control" placeholder="Latitude">
+  					</div>
+  					<div class="col-sm-6">
+  						Longitude
+  						<input type="text" class="form-control" placeholder="Longitude">
+  					</div>
+  				</div>
+  				<div class="row">
+  					<div class="col-sm-12">
+  						<br>
+  						Find your spot in the map
+  					</div>
+  				</div>
+  			</div>
+  		</div>
+  	</tab>
+  	<tab heading="Description">
+  		<textarea name="" id="" cols="30" rows="10" class="form-control" placeholder="Describe your business/service"></textarea>
+  	</tab>
+  	<tab heading="Gallery">
+  		Please select .jpg or .png images with size less than 5MB
+  		<input type="file" class="form-control">
+  	</tab>
+  	<tab heading="Branches">
+  	</tab>
+  	<tab heading="Reviews">
+  	</tab>
+</tabset>
+<br>
+<div class="row">
+  	<div class="col-sm-12">
+		<button type="submit" class="btn btn-info"  ng-disabled="userForm.$invalid">Save</button>  				
+		<button class="btn btn-danger" ng-disabled="true">Save & Add new</button>  				
+		<button class="btn btn-default" ng-click="reset_data();">Reset</button>  				
+  	</div>
+</div>
+{{localsearch|json}}

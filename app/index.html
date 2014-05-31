@@ -4,9 +4,9 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Gofindy CPanel</title>
-  <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css">
-  <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme.css">
+  <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="lib/ng-table.min.css">
+  <link rel="stylesheet" href="lib/offcanvas.css">
   <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" type="text/css" href="lib/ng-grid/ng-grid.min.css" />
 </head>
@@ -38,6 +38,7 @@
                     </ul>
                 </li>
                 <li data-access-level="accessLevels.free_user" active-nav><a href="">Messages <span class="badge">2</span></a></li>
+                <li data-access-level="accessLevels.executive" active-nav><a href="#/localsearch">Local search </a></li>
                 <li data-access-level="accessLevels.executive" active-nav><a href="">Smartcard </a></li>
                 <li class="dropdown">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown">Categories <b class="caret"></b></a>
@@ -62,7 +63,11 @@
             </ul>
         </div><!--/.nav-collapse -->
     </div>
+    
     <div class="view-container container-fluid">
+      <div class="visible-xs">
+        <button class="bt btn-primary btn-xs" data-toggle="offcanvas"><-></button>
+      </div>
     	<div ui-view class="view-frame"></div>
   	</div>
     <div id="alertBox" class="alert alert-danger alert-dismissable" ng-show="error">
@@ -74,7 +79,8 @@
     <script src="lib/angular/angular.min.js"></script>
   	<script src="lib/angular/ui-bootstrap-tpls-0.11.0.min.js"></script>
     <script src="lib/angular/angular-cookies.min.js"></script>
-  	<script src="lib/angular/angular-animate.min.js"></script>
+    <script src="lib/angular/angular-animate.min.js"></script>
+  	<script src="lib/offcanvas.js"></script>
   	<!-- <script src="lib/angular/angular-route.min.js"></script> -->
     <script src="lib/angular/angular-resource.min.js"></script>
   	<script src="lib/angular/angular-ui-router.min.js"></script>

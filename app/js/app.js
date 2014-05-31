@@ -68,6 +68,20 @@ cpanelApp.config(['$stateProvider', '$urlRouterProvider','$locationProvider','$h
             url:'password/',
             templateUrl:'./partials/profile/password.html'
         })
+        .state('executive.localsearch',{
+            url:'/localsearch',
+            templateUrl:'./partials/localsearch.html',
+            controller:'LocalsearchCtrl'
+        })
+        .state('executive.addlocalsearch',{
+            url:'/localsearch/new',
+            templateUrl:'./partials/addlocalsearch.html',
+            controller:'AddLocalsearchCtrl'
+        })
+        .state('executive.editlocalsearch',{
+            url:'/localsearch/:id',
+            templateUrl:'./partials/edasditlocalsear.html'
+        });
     $stateProvider
         .state('admin',{
             abstract:true,

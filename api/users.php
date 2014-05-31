@@ -17,16 +17,18 @@ $app->run();
 
 function getUsers(){
 	$page=1;
-	$limit=10;
+	$limit=0;
 	$no_of_pages = 0;
 	$no_of_rows = 0;
-	$conditions_params=['username','email','country_id','state_id','district_id','status','acc_type','area_id'];
+	$conditions_params=['username','email','country_id','state_id','district_id','status','area_id'];
 	$conditions = array();
 	$query_condition='';
 	$app = Slim::getInstance();
-	$page=intval($app->request()->params('page'));
-	$limit=intval($app->request()->params('limit'));
-	foreach($conditions_params as $param){
+	if($app->request()->params('page'))
+		$page=intval($app->request()->params('page'));
+	if($app->request()->params('limit'))
+		$limit=intval($app->request()->params('limit'));
+	/*foreach($conditions_params as $param){
 		if($app->request()->params($param)){
 			$searches = explode(",", $app->request()->params($param));
 			if(sizeof($searches) > 0){
@@ -46,16 +48,22 @@ function getUsers(){
 			$query_condition = $query_condition." ".$condition." AND";
 		}
 		$query_condition = substr($query_condition, 0, -4);
-	}
+	}*/
 	$offset = ($page - 1) * $limit;
 	$sql_1 = "SELECT COUNT(user_id) FROM users".$query_condition;
 	$sql_2 = "SELECT * FROM users INNER JOIN countries USING(country_id) INNER JOIN states USING(state_id) INNER JOIN districts USING(district_id) INNER JOIN areas USING(area_id) ".$query_condition." LIMIT :offset , :limit";
-	//echo $sql_2.'<br><hr>';
+	$sql_2 = "SELECT * FROM users LIMIT :offset , :limit";
+	// echo $sql_2.'<br><hr>';
 	try {
 		$db = getConnection();
 		$stmt = $db->query($sql_1);  
 		$no_of_rows = $stmt->fetchColumn();
-		$no_of_pages = ceil($no_of_rows / $limit);
+		if($limit == 0){
+		 	$limit=intval($no_of_rows);
+		}
+		$no_of_pages=0;
+		if($limit!=0)
+			$no_of_pages = ceil($no_of_rows / $limit);
 		$stmt = $db->prepare($sql_2);
         $stmt->bindParam("offset",$offset, PDO::PARAM_INT);
        	$stmt->bindParam("limit",$limit, PDO::PARAM_INT);
@@ -87,13 +95,12 @@ function getUser($id){
 function addUser(){
 	$request = Slim::getInstance()->request();
 	$data = json_decode($request->getBody());
-	$sql = "INSERT INTO users (email,password,acc_type,name,phone1,phone2,area_id,district_id,state_id,country_id,address_line_1,address_line_2,address_line_3,status) VALUES(:email,:password,:acc_type,:name,:phone1,:phone2,:area_id,:district_id,:state_id,:country_id,:address_line_1,:address_line_2,:address_line_3,:status)";
+	$sql = "INSERT INTO users (email,password,name,phone1,phone2,area_id,district_id,state_id,country_id,address_line_1,address_line_2,address_line_3,status) VALUES(:email,:password,:name,:phone1,:phone2,:area_id,:district_id,:state_id,:country_id,:address_line_1,:address_line_2,:address_line_3,:status)";
 	try{
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
 		$stmt->bindParam("email", $data->email);
 		$stmt->bindParam("password", $data->password);
-		$stmt->bindParam("acc_type", $data->acc_type);
 		$stmt->bindParam("name", $data->name);
 		$stmt->bindParam("phone1", $data->phone1);
 		$stmt->bindParam("phone2", $data->phone2);

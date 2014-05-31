@@ -62,8 +62,8 @@ appControllers.controller('UserListCtrl',['$scope','User','$filter','$http','ngT
     $scope.getPagedDataAsync = function (pageSize, page, searchText) {
         setTimeout(function () {
             var data;
-            User.query({'acc_type':'5_gold,6_silver,7_free'},{},function(largeLoad){
-                console.log(largeLoad);
+            User.query({},{},function(largeLoad){
+                console.log(largeLoad.users);
                 $scope.setPagingData(largeLoad.users,page,pageSize);
             });
         }, 100);
@@ -558,7 +558,7 @@ appControllers.controller('AddUserCtrl',['$scope','$http','User','Country','Stat
     });
     $scope.$watch('area',function (newVal,oldVal){
         $scope.user.area_id=$scope.area.area_id;
-    })
+    });
     var get_states = function(country_id){
         $scope.states = State.query({'country_id': country_id},function(states){
         });
@@ -586,4 +586,152 @@ appControllers.controller('AddUserCtrl',['$scope','$http','User','Country','Stat
         });
 
     };
+}])
+appControllers.controller('LocalsearchCtrl',['$scope','Localsearch',function($scope,Localsearch){
+    $scope.businesses=[];
+    $scope.businesses_selected=[];
+    $scope.filterOptions = {
+        filterText: "",
+        useExternalFilter: true
+    }; 
+    $scope.totalServerItems = 0;
+    $scope.pagingOptions = {
+        pageSizes: [20, 50, 100],
+        pageSize: 20,
+        currentPage: 1
+    };
+    $scope.setPagingData = function(data, page, pageSize){ 
+        var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
+        $scope.businesses = pagedData;
+        $scope.totalServerItems = data.length;
+        if (!$scope.$$phase) {
+            $scope.$apply();
+        }
+    };
+    $scope.getPagedDataAsync = function (pageSize, page, searchText) {
+        setTimeout(function () {
+            var data;
+            Localsearch.query({},{},function(largeLoad){
+                $scope.setPagingData(largeLoad.results,page,pageSize);
+            });
+        }, 100);
+    };
+    $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+    $scope.$watch('pagingOptions', function (newVal, oldVal) {
+        if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) {
+          $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+        }
+    }, true);
+    $scope.$watch('filterOptions', function (newVal, oldVal) {
+        if (newVal !== oldVal) {
+          $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+        }
+    }, true);
+    $scope.localsearchTable = { 
+        data: 'businesses',
+        columnDefs: [{field:'business_id', displayName:'Id',width: 90},
+                        {field:'name',displayName:'Name'},
+                        {field:'user_id',displayName:'UserId'},
+                        {field:'district',displayName:'District'},
+                        {field:'categories[0].category',displayName:'Category'},
+                    ],
+        selectedItems: $scope.businesses_selected,
+        enablePaging: true,
+        showFooter: true,
+        totalServerItems: 'totalServerItems',
+        pagingOptions: $scope.pagingOptions,
+        filterOptions: $scope.filterOptions
+    };
+    $scope.edit_business = function(business_id){
+        alert(business_id);
+    }
+    $scope.changeSelection = function(business) {
+        // console.info(business);
+    }
+    $scope.delete_businesses = function(){
+        var businesses_selected_count= $scope.businesses_selected.length;
+        var deleted=0;
+        if(confirm("Delete "+businesses_selected_count+" businesss?")){
+            $.each($scope.businesses_selected, function(key, value) {
+                business.delete({},{'Id':value.business_id},function(data){
+                    deleted++;
+                    if(deleted == businesss_selected_count){
+                        $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                        $scope.businesss_selected=[];
+                    }
+                });
+            });
+        }
+    }
+}])
+appControllers.controller('AddLocalsearchCtrl',['$scope','Localsearch','Country','State','District','Area','Loc_category','Loc_sub_category','Loc_feature','Loc_product',function($scope,Localsearch,Country,State,District,Area,Loc_category,Loc_sub_category,Loc_feature,Loc_product){
+    $scope.localsearch={
+        'name':'',
+        'caption':'',
+        'unique_name':'',
+        'business_type':'',
+        'user_id':'',
+        'address_line_1':'',
+        'address_line_2':'',
+        'area_id':'',
+        'district_id':'',
+        'state_id':'',
+        'country_id':'',
+        'lat':'',
+        'lng':'',
+        'phone1':'',
+        'phone2':'',
+        'email':'',
+        'website':'',
+        'fb':'',
+        'gp':'',
+        'working_hours':'',
+        'established':'',
+        'description':'',
+        'categories':[],
+        'sub-categories':[],
+        'features':[],
+        'products':[]
+    };
+    $scope.reset_data=function(){
+        $scope.localsearch={};
+    }
+
+    $scope.country={'country_id':'','country':''};
+    $scope.state={'state_id':'','state':''};
+    $scope.district={'district_id':'','district':''};
+    $scope.area={'area_id':'','area':''};
+    $scope.countries=Country.query(function(countries){
+       $scope.country=countries[0];
+    }); 
+    $scope.$watch('country', function (newVal, oldVal) {
+        get_states(newVal.country_id);   
+        $scope.user.country_id=newVal.country_id;
+    });
+    $scope.$watch('state', function (newVal, oldVal) {
+        get_districts(newVal.state_id);   
+        $scope.user.state_id=newVal.state_id;
+        $scope.district={'district_id':'','district':''};
+        $scope.area={'area_id':'','area':''};
+    });
+    $scope.$watch('district',function (newVal, oldVal){
+        get_areas(newVal.district_id);
+        $scope.user.district_id=newVal.district_id;
+        $scope.area={'area_id':'','area':''};
+    });
+    $scope.$watch('area',function (newVal,oldVal){
+        $scope.user.area_id=$scope.area.area_id;
+    })
+    var get_states = function(country_id){
+        $scope.states = State.query({'country_id': country_id},function(states){
+        });
+    }
+    var get_districts=function(state_id){
+        $scope.districts = District.query({'state_id':state_id},function(districts){
+        });
+    }
+    var get_areas=function(district_id){
+        $scope.areas = Area.query({'district_id':district_id},function(areas){
+        });
+    }
 }])

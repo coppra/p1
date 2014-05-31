@@ -10,7 +10,7 @@ appServices.factory('Auth', function($http, $cookieStore){
         , userRoles = routingConfig.userRoles
         , currentUser = $cookieStore.get('user') || { username: '', role: userRoles.public };
     $cookieStore.remove('user');
-    console.log(currentUser);
+    //console.log(currentUser);
     function changeUser(user) {
         angular.extend(currentUser, user);
     }
@@ -92,7 +92,7 @@ appServices.factory('State',['$resource',
 ]);
 appServices.factory('District',['$resource',
 	function($resource){
-		return $resource('../locations/district/:Id?', {Id:"@Id"}, {
+		return $resource('../api/locations/district/:Id?', {Id:"@Id"}, {
       		query: {method:'GET', params:{}, isArray:true}
     	});
 	}
@@ -108,21 +108,21 @@ appServices.factory('Area',['$resource',
 appServices.factory('Loc_category',['$resource',
     function($resource){
         return $resource('../api/categories/loc/:Id?', {Id:"@Id"}, {
-            query: {method:'GET', params:{}, isArray:true},
+            query: {method:'GET', params:{}, isArray:true}
         });
     }
 ]);
 appServices.factory('Loc_sub_category',['$resource',
     function($resource){
         return $resource('../api/categories/loc/sub/:Id?', {Id:"@Id"}, {
-            query: {method:'GET', params:{}, isArray:true},
+            query: {method:'GET', params:{}, isArray:true}
         });
     }
 ]);
 appServices.factory('Loc_feature',['$resource',
     function($resource){
         return $resource('../api/loc_features/:Id?', {Id:"@Id"}, {
-            query: {method:'GET', params:{}, isArray:true},
+            query: {method:'GET', params:{}, isArray:true}
         });
     }
 ]);
@@ -133,4 +133,9 @@ appServices.factory('Loc_product',['$resource',
         });
     }
 ]);
-
+appServices.factory('Localsearch',['$resource',
+    function($resource){
+        return $resource('../api/localsearch/:Id?', {Id:"@Id"},{
+            query: {method:'GET', params:{}, isArray:false}
+        });
+    }]);
