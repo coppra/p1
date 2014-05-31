@@ -28,3 +28,19 @@ a, a:link, a:visited, a:hover {
 .row-offcanvas{
   margin:0px;
 }
+
+ul.select2-choices{
+  border:none !important;
+  margin-top:-5px !important;
+  background: transparent !important;
+  outline: hidden !important;   
+}
+
+#map {
+    height:400px;
+    width:100%;
+}
+
+.has_error{
+  border-color: red;
+}

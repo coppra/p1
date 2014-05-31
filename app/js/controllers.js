@@ -689,7 +689,7 @@ appControllers.controller('AddLocalsearchCtrl',['$scope','Localsearch','Country'
         'established':'',
         'description':'',
         'categories':[],
-        'sub-categories':[],
+        'sub_categories':[],
         'features':[],
         'products':[]
     };
@@ -702,26 +702,40 @@ appControllers.controller('AddLocalsearchCtrl',['$scope','Localsearch','Country'
     $scope.district={'district_id':'','district':''};
     $scope.area={'area_id':'','area':''};
     $scope.countries=Country.query(function(countries){
-       $scope.country=countries[0];
+      // $scope.country=countries[0];
     }); 
     $scope.$watch('country', function (newVal, oldVal) {
         get_states(newVal.country_id);   
-        $scope.user.country_id=newVal.country_id;
+        $scope.state={'state_id':'','state':''};
+        $scope.district={'district_id':'','district':''};
+        $scope.area={'area_id':'','area':''};
+        $scope.localsearch.country_id=newVal.country_id;
     });
     $scope.$watch('state', function (newVal, oldVal) {
         get_districts(newVal.state_id);   
-        $scope.user.state_id=newVal.state_id;
+        $scope.localsearch.state_id=newVal.state_id;
         $scope.district={'district_id':'','district':''};
         $scope.area={'area_id':'','area':''};
     });
     $scope.$watch('district',function (newVal, oldVal){
         get_areas(newVal.district_id);
-        $scope.user.district_id=newVal.district_id;
+        $scope.localsearch.district_id=newVal.district_id;
         $scope.area={'area_id':'','area':''};
     });
     $scope.$watch('area',function (newVal,oldVal){
-        $scope.user.area_id=$scope.area.area_id;
-    })
+        $scope.localsearch.area_id=$scope.area.area_id;
+        if($scope.area.area!='')
+            codeAddress($scope.area.area+", "+$scope.district.district+", "+$scope.state.state);
+    });
+    /*$scope.$watch('localsearch.country_id', function (newVal, oldVal) {
+        get_states(newVal);   
+    });
+    $scope.$watch('localsearch.state_id', function (newVal, oldVal) {
+        get_districts(newVal);   
+    });
+    $scope.$watch('localsearch.district_id',function (newVal, oldVal){
+        get_areas(newVal);
+    });*/
     var get_states = function(country_id){
         $scope.states = State.query({'country_id': country_id},function(states){
         });
@@ -734,4 +748,87 @@ appControllers.controller('AddLocalsearchCtrl',['$scope','Localsearch','Country'
         $scope.areas = Area.query({'district_id':district_id},function(areas){
         });
     }
+
+    $scope.categories=Loc_category.query();
+    $scope.$watch('localsearch.categories', function (newVal, oldVal) {
+        var category_id = newVal.join(',');
+        get_sub_categories(category_id);
+        get_features(category_id);
+        get_products(category_id);
+        
+    });
+    var get_sub_categories=function(category_id){
+        $scope.sub_categories = Loc_sub_category.query({'category_id': category_id});
+    }
+    var get_features=function(category_id){
+        $scope.features = Loc_feature.query({'category_id': category_id});
+    }
+    var get_products=function(category_id){
+        $scope.products = Loc_product.query({'category_id': category_id});
+    }
+     //$scope.list_of_string = ['tag1', 'tag2']
+   $scope.cat_select2Options = {
+        allowClear:true,
+        placeholder: "Select a Categories",
+         maximumSelectionSize: 3
+    };
+    var latlng = new google.maps.LatLng(9.9312328, 76.26730410000005);
+
+    var mapOptions = {
+        zoom: 13,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.TERRAIN
+    }
+    $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    $scope.geocoder = new google.maps.Geocoder();
+    google.maps.event.addListener($scope.map, 'click', function(event) {      
+        $scope.localsearch.lat=event.latLng.lat();
+        $scope.localsearch.lng=event.latLng.lng();
+        showvalues(event.latLng)
+        placeMarker(event.latLng);
+    });
+    var showvalues=function(location){
+        $scope.$apply(function(){
+            $scope.localsearch.lat=location.lat();
+            $scope.localsearch.lng=location.lng();
+        })
+        /*setTimeout(function(){
+             $scope.localsearch.lat=location.lat();
+            $scope.localsearch.lng=location.lng();
+        },200);*/
+    }
+    var placeMarker=function(location)
+    {
+        $scope.marker = new google.maps.Marker({
+                position: location,
+                map: $scope.map
+            });
+        if ($scope.oldMarker != undefined){
+              $scope.oldMarker.setMap(null);
+        }
+        $scope.oldMarker = $scope.marker;
+            //map.setCenter(location);
+    }
+    
+    function codeAddress(address) {
+    //var address = document.getElementById("area").value;
+        $scope.geocoder.geocode( { 'address': address}, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            $scope.map.setCenter(results[0].geometry.location);
+            $scope.marker = new google.maps.Marker({
+                map: $scope.map,
+                position: results[0].geometry.location
+            });
+            if ($scope.oldMarker != undefined){
+                  $scope.oldMarker.setMap(null);
+            }
+            $scope.oldMarker = $scope.marker;
+            showvalues(results[0].geometry.location);
+          } else {
+            //alert("Geocode was not successful for the following reason: " + status);
+          }
+        });
+    }
+
+
 }])

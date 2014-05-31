@@ -1,110 +1,137 @@
-<tabset>
-  	<tab heading="Details">
-  		<div class="row">
-  			<div class="col-sm-4">
-  				Business Name
-  				<input type="text" class="form-control" ng-model="localsearch.name" required>
-  				Caption 
-  				<input type="text" class="form-control" ng-model="localsearch.caption">
-  				 Unique name
-  				<input type="text" class="form-control" ng-model="localsearch.unique_name" required>
-  				 Business type
-  				 <select name="" id="" class="form-control" ng-model="localsearch.business_type" required>
-  				 	<option value="business">Business</option>
-  				 	<option value="service">Service</option>
-  				 </select>
-  				 Established in
-  				 <input type="text" class="form-control" ng-model="localsearch.established" placeholder="eg. 1995">
-  				 Owner Account Id
-  				<input type="text" class="form-control" ng-model="localsearch.user_id" required>
-  				 
-  			</div>
-  			<div class="col-sm-4">
-  				Phone number
-  				<input type="text" class="form-control" ng-model="localsearch.phone1">
-  				 Alternate phone number
-  				<input type="text" class="form-control" ng-model="localsearch.phone2">
-  				Email Id
-  				<input type="text" class="form-control" ng-model="localsearch.email">
-  				Website
-  				<input type="text" class="form-control" ng-model="localsearch.website">
-  				Facebook Url
-  				<input type="text" class="form-control" ng-model="localsearch.fb">
-  				Google+ Url
-  				<input type="text" class="form-control" ng-model="localsearch.gp">
-  			</div>
-  			<div class="col-sm-4">
-  				Categories
-  				<select name="" id="" class="form-control"></select>
-  				Sub-categories
-  				<select name="" id="" class="form-control"></select>
-  				Features
-  				<select name="" id="" class="form-control"></select>
-  				Products
-  				<select name="" id="" class="form-control"></select>
-  				Logo
-  				<input type="file" class="form-control">
-  				Cover photo
-  				<input type="file" class="form-control">
-  			</div>
-  		</div>
-  		
-  	</tab>
-  	<tab heading="Address">
-  		<div class="row">
-  			<div class="col-sm-4">
-  				Country
-  				<select ng-model="country" class="form-control" ng-options="country.country for country in countries"></select>
-				State
-				<select ng-model="state" class="form-control" ng-options="state.state for state in states"></select>
-				District
-				<select ng-model="district" class="form-control" ng-options="district.district for district in districts"></select>
-				Area
-				<select ng-model="area" class="form-control" ng-options="area.area for area in areas"></select>
-  				Address line 1
-  				<input type="text" class="form-control">
-  				Address line 2
-  				<input type="text" class="form-control">
-  				{{country}}
-  			</div>
-  			<div class="col-sm-8">
-  				<div class="row">
-  					<div class="col-sm-6">
-  						Latitude
-  						<input type="text" class="form-control" placeholder="Latitude">
-  					</div>
-  					<div class="col-sm-6">
-  						Longitude
-  						<input type="text" class="form-control" placeholder="Longitude">
-  					</div>
-  				</div>
-  				<div class="row">
-  					<div class="col-sm-12">
-  						<br>
-  						Find your spot in the map
-  					</div>
-  				</div>
-  			</div>
-  		</div>
-  	</tab>
-  	<tab heading="Description">
-  		<textarea name="" id="" cols="30" rows="10" class="form-control" placeholder="Describe your business/service"></textarea>
-  	</tab>
-  	<tab heading="Gallery">
-  		Please select .jpg or .png images with size less than 5MB
-  		<input type="file" class="form-control">
-  	</tab>
-  	<tab heading="Branches">
-  	</tab>
-  	<tab heading="Reviews">
-  	</tab>
-</tabset>
-<br>
-<div class="row">
-  	<div class="col-sm-12">
-		<button type="submit" class="btn btn-info"  ng-disabled="userForm.$invalid">Save</button>  				
-		<button class="btn btn-danger" ng-disabled="true">Save & Add new</button>  				
-		<button class="btn btn-default" ng-click="reset_data();">Reset</button>  				
-  	</div>
+<form name="userForm" id="userForm" ng-submit="processForm()" novalidate>
+<div class="panel-group" id="accordion">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+          Basic Details
+        </a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in">
+      <div class="panel-body">
+       <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group" ng-class="{ 'has-error' : true}">
+            
+          <label class="control-label" for="inputSuccess3">Business Name</label>
+          <input type="text" name="name" class="form-control" ng-model="localsearch.name" required >
+          </div>
+          Caption 
+          <input type="text" class="form-control input-sm" ng-model="localsearch.caption">
+           Unique name
+          <input type="text" class="form-control input-sm" ng-model="localsearch.unique_name" required>
+           Business type
+           <select name="" id="" class="form-control input-sm" ng-model="localsearch.business_type" required>
+            <option value="business">Business</option>
+            <option value="service">Service</option>
+           </select>
+           Established in
+           <input type="text" class="form-control input-sm" ng-model="localsearch.established" placeholder="eg. 1995">
+           Owner Account Id
+          <input type="text" class="form-control input-sm" ng-model="localsearch.user_id" required>
+           
+        </div>
+        <div class="col-sm-4">
+          Phone number
+          <input type="text" class="form-control input-sm" ng-model="localsearch.phone1">
+           Alternate phone number
+          <input type="text" class="form-control input-sm" ng-model="localsearch.phone2">
+          Email Id
+          <input type="text" class="form-control input-sm" ng-model="localsearch.email">
+          Website
+          <input type="text" class="form-control input-sm" ng-model="localsearch.website">
+          Facebook Url
+          <input type="text" class="form-control input-sm" ng-model="localsearch.fb">
+          Google+ Url
+          <input type="text" class="form-control input-sm" ng-model="localsearch.gp">
+        </div>
+        <div class="col-sm-4">
+          Categories
+          <select ui-select2="cat_select2Options" multiple ng-model="localsearch.categories" class="form-control input-sm">
+            <option ng-repeat="category in categories" value="{{category.category_id}}">{{category.category}}</option>
+          </select>
+          Sub-categories
+          <select ui-select2="sub_select2Options" multiple ng-model="localsearch.sub_categories" class="form-control input-sm">
+            <option ng-repeat="sub_category in sub_categories" value="{{sub_category.sub_category_id}}">{{sub_category.sub_category}}</option>
+          </select>
+          Features
+          <select ui-select2="features_select2Options" multiple ng-model="localsearch.features" class="form-control input-sm">
+            <option ng-repeat="feature in features" value="{{feature.feature_id}}">{{feature.feature}}</option>
+          </select>
+          Products
+          <select ui-select2="features_select2Options" multiple ng-model="localsearch.products" class="form-control input-sm">
+            <option ng-repeat="product in products" value="{{product.product_id}}">{{product.product}}</option>
+          </select>
+          Logo
+          <input type="file" class="form-control input-sm">
+          Cover photo
+          <input type="file" class="form-control input-sm">
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+          Location details
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse ">
+      <div class="panel-body">
+       <div class="row">
+        <div class="col-sm-4">
+          Country
+          <!-- <select ng-model="localsearch.country_id" class="form-control input-sm">
+            <option ng-repeat="country in countries" value="{{country.country_id}}">{{country.country}}</option>
+          </select> -->
+          <select ng-model="country" class="form-control input-sm" ng-options="country.country for country in countries"></select>
+          State
+          <select ng-model="state" class="form-control input-sm" ng-options="state.state for state in states"></select>
+          District
+          <select ng-model="district" class="form-control input-sm" ng-options="district.district for district in districts"></select>
+          Area
+          <select ng-model="area" class="form-control input-sm" ng-options="area.area for area in areas"></select>
+          Address line 1
+          <input type="text" class="form-control input-sm">
+          Address line 2
+          <input type="text" class="form-control input-sm">
+          Latitude
+          <input type="text" ng-model="localsearch.lat" class="form-control input-sm" placeholder="Latitude">
+          Longitude
+          <input type="text" ng-model="localsearch.lng" class="form-control input-sm" placeholder="Longitude">
+        </div>
+        <div class="col-sm-8">
+          <br>
+          <div id="map"></div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+          Description
+        </a>
+      </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse">
+      <div class="panel-body">
+        <textarea name="" id="" cols="30" rows="5" class="form-control input-sm" placeholder="Describe your business/service"></textarea>
+      </div>
+    </div>
+  </div>
 </div>
-{{localsearch|json}}
+<div class="row">
+    <div class="col-sm-12">
+    <button type="submit" class="btn btn-info"  ng-disabled="userForm.$invalid">Save</button>         
+    <button class="btn btn-success" ng-disabled="true">Save & Add new</button>         
+    <button class="btn btn-default" ng-click="reset_data();">Reset</button>         
+    </div>
+</div>
+{{localsearch}}

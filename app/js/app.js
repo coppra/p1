@@ -1,7 +1,6 @@
 'use strict';
 
 /* App Module */
-
 var cpanelApp = angular.module('cpanelApp', [
   'ngCookies',
   'ui.router',
@@ -10,7 +9,8 @@ var cpanelApp = angular.module('cpanelApp', [
   'appFilters',
   'appServices',
   'appDirectives',
-  'ngGrid'
+  'ngGrid',
+  'ui.select2'
 ]);
 cpanelApp.config(['$stateProvider', '$urlRouterProvider','$locationProvider','$httpProvider', function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     var access = routingConfig.accessLevels;
