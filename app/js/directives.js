@@ -98,3 +98,45 @@ appDirectives.directive('activeNav', ['$location', function($location) {
     }
 
 }]);
+appDirectives.directive('uniqueUniquename', function($http,Localsearch) {
+      return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function (scope, element, attrs, ngModel) {
+
+            function validate(value) {
+                Localsearch.query({'unique_name': ngModel.$viewValue},function(data){
+                    if (data.no_of_results == 0 ) {
+                      ngModel.$setValidity('unique', true);
+                    } else {
+                      ngModel.$setValidity('unique', false);
+                    }
+                });
+            }
+            scope.$watch( function() {
+              return ngModel.$viewValue;
+            }, validate);
+        }
+      };
+});
+appDirectives.directive('validAccount', function($http,User) {
+      return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function (scope, element, attrs, ngModel) {
+
+            function validate(value) {
+                User.query({'user_id': ngModel.$viewValue},function(data){
+                    if (data.no_of_results == 1 ) {
+                      ngModel.$setValidity('valid', true);
+                    } else {
+                      ngModel.$setValidity('valid', false);
+                    }
+                });
+            }
+            scope.$watch( function() {
+              return ngModel.$viewValue;
+            }, validate);
+        }
+      };
+});

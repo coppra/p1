@@ -37,10 +37,17 @@ ul.select2-choices{
 }
 
 #map {
-    height:400px;
+    height:440px;
     width:100%;
 }
 
-.has_error{
-  border-color: red;
+.form-group{
+  margin-bottom: 5px;
+}
+.form-group label{
+  font-weight: normal;
+  margin-bottom: 0px;
+}
+.red{
+  background-color: #ffded3;
 }

@@ -18,8 +18,19 @@ $app->delete('/categories/loc/sub/:id','deleteLocSubCategory');
 $app->run();
 
 function getLocCategories(){
-	// add filter for business type
-	$sql = "SELECT * FROM loc_categories ";
+	$condition = '';
+    $app = new Slim();
+    if($app->request()->params('kind')){
+        $kinds = explode(",",$app->request()->params('kind'));
+        if(sizeof($kinds) > 0){
+            $condition = "  WHERE";
+            foreach($kinds as $val){
+                $condition = $condition." kind LIKE '$val' OR";
+            }
+            $condition = substr($condition, 0, -3);
+        }
+    }
+	$sql = "SELECT * FROM loc_categories".$condition;
 	try{
 		$db = getConnection();
         $stmt= $db->query($sql);

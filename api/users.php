@@ -20,7 +20,7 @@ function getUsers(){
 	$limit=0;
 	$no_of_pages = 0;
 	$no_of_rows = 0;
-	$conditions_params=['username','email','country_id','state_id','district_id','status','area_id'];
+	$conditions_params=['user_id','username','email','country_id','state_id','district_id','status','area_id'];
 	$conditions = array();
 	$query_condition='';
 	$app = Slim::getInstance();
@@ -28,7 +28,7 @@ function getUsers(){
 		$page=intval($app->request()->params('page'));
 	if($app->request()->params('limit'))
 		$limit=intval($app->request()->params('limit'));
-	/*foreach($conditions_params as $param){
+	foreach($conditions_params as $param){
 		if($app->request()->params($param)){
 			$searches = explode(",", $app->request()->params($param));
 			if(sizeof($searches) > 0){
@@ -48,7 +48,7 @@ function getUsers(){
 			$query_condition = $query_condition." ".$condition." AND";
 		}
 		$query_condition = substr($query_condition, 0, -4);
-	}*/
+	}
 	$offset = ($page - 1) * $limit;
 	$sql_1 = "SELECT COUNT(user_id) FROM users".$query_condition;
 	$sql_2 = "SELECT * FROM users INNER JOIN countries USING(country_id) INNER JOIN states USING(state_id) INNER JOIN districts USING(district_id) INNER JOIN areas USING(area_id) ".$query_condition." LIMIT :offset , :limit";

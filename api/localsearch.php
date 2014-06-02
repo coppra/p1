@@ -21,7 +21,7 @@ function getLocalsearches(){
 	$limit=0;
 	$no_of_pages = 0;
 	$no_of_rows = 0;
-	$conditions_params=['name','user_id','country_id','state_id','district_id','area_id','status'];
+	$conditions_params=['name','unique_name','user_id','country_id','state_id','district_id','area_id','status'];
 	$conditions_params_2=['category_id','sub_category_id','feature_id','product_id'];
 	$conditions = array();
 	$query_condition='';
@@ -71,21 +71,20 @@ function getLocalsearches(){
 				LEFT JOIN states s ON s.state_id=l.state_id
 				LEFT JOIN districts d ON d.district_id=l.district_id
 				LEFT JOIN areas a ON a.area_id=l.area_id
-				INNER JOIN localsearch_x_categories USING(business_id)
-				INNER JOIN localsearch_x_sub_categories USING(business_id) 
-				INNER JOIN localsearch_x_features USING(business_id) 
-				INNER JOIN localsearch_x_products USING(business_id) "
+				LEFT JOIN localsearch_x_categories USING(business_id)
+				LEFT JOIN localsearch_x_sub_categories USING(business_id) 
+				LEFT JOIN localsearch_x_features USING(business_id) 
+				LEFT JOIN localsearch_x_products USING(business_id) "
 				.$query_condition;
-	// $sql_2 = "SELECT * FROM localsearch LEFT JOIN countries USING(country_id) LEFT JOIN states USING(state_id) LEFT JOIN districts USING(district_id) LEFT JOIN areas USING(area_id)".$query_condition." LIMIT :offset , :limit";
 	$sql_2 = "SELECT DISTINCT l.*,c.country,s.state,d.district,a.area FROM localsearch l 
 				LEFT JOIN countries c ON c.country_id=l.country_id
 				LEFT JOIN states s ON s.state_id=l.state_id
 				LEFT JOIN districts d ON d.district_id=l.district_id
 				LEFT JOIN areas a ON a.area_id=l.area_id
-				INNER JOIN localsearch_x_categories USING(business_id)
-				INNER JOIN localsearch_x_sub_categories USING(business_id) 
-				INNER JOIN localsearch_x_features USING(business_id) 
-				INNER JOIN localsearch_x_products USING(business_id) "
+				LEFT JOIN localsearch_x_categories USING(business_id)
+				LEFT JOIN localsearch_x_sub_categories USING(business_id) 
+				LEFT JOIN localsearch_x_features USING(business_id) 
+				LEFT JOIN localsearch_x_products USING(business_id) "
 				.$query_condition
 				." LIMIT :offset , :limit";
 	try {
@@ -144,7 +143,7 @@ function getLocalsearch($id){
 function addLocalsearch(){
 	$request = Slim::getInstance()->request();
 	$data = json_decode($request->getBody());
-	$sql = "INSERT INTO localsearch (name,unique_name,caption,business_type,user_id,address_line_1,address_line_2,area_id,district_id,state_id,country_id,lat,lng,phone1,phone2,email,website,working_hours,established,description,status,priority) VALUES(:name,:unique_name,:caption,:business_type,:user_id,:address_line_1,:address_line_2,:area_id,:district_id,:state_id,:country_id,:lat,:lng,:phone1,:phone2,:email,:website,:working_hours,:established,:description,:status,:priority)";
+	$sql = "INSERT INTO localsearch (name,unique_name,caption,business_type,user_id,contact_person,address_line_1,address_line_2,area_id,district_id,state_id,country_id,lat,lng,phone1,phone2,email,website,working_hours,established,description,status) VALUES(:name,:unique_name,:caption,:business_type,:user_id,:contact_person,:address_line_1,:address_line_2,:area_id,:district_id,:state_id,:country_id,:lat,:lng,:phone1,:phone2,:email,:website,:working_hours,:established,:description,:status)";
 	try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -153,6 +152,7 @@ function addLocalsearch(){
         $stmt->bindParam("caption", $data->caption);
         $stmt->bindParam("business_type", $data->business_type);
         $stmt->bindParam("user_id", $data->user_id);
+        $stmt->bindParam("contact_person", $data->contact_person);
         $stmt->bindParam("address_line_1", $data->address_line_1);
         $stmt->bindParam("address_line_2", $data->address_line_2);
         $stmt->bindParam("area_id", $data->area_id);
@@ -169,7 +169,6 @@ function addLocalsearch(){
         $stmt->bindParam("established", $data->established);
         $stmt->bindParam("description", $data->description);
         $stmt->bindParam("status", $data->status);
-        $stmt->bindParam("priority", $data->priority);
     	$stmt->execute();
         $data->business_id = $db->lastInsertId();
         $db = null;

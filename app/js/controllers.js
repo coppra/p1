@@ -611,6 +611,16 @@ appControllers.controller('LocalsearchCtrl',['$scope','Localsearch',function($sc
     $scope.getPagedDataAsync = function (pageSize, page, searchText) {
         setTimeout(function () {
             var data;
+            if(searchText){
+                var ft = searchText.toLowerCase();
+                Localsearch.query({},{},function(largeLoad){
+                    largeLoad = largeLoad.results;        
+                    data = largeLoad.filter(function(item) {
+                        return JSON.stringify(item).toLowerCase().indexOf(ft) != -1;
+                    });
+                    $scope.setPagingData(data,page,pageSize);
+                });    
+            }
             Localsearch.query({},{},function(largeLoad){
                 $scope.setPagingData(largeLoad.results,page,pageSize);
             });
@@ -618,7 +628,7 @@ appControllers.controller('LocalsearchCtrl',['$scope','Localsearch',function($sc
     };
     $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
     $scope.$watch('pagingOptions', function (newVal, oldVal) {
-        if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) {
+        if (newVal !== oldVal) {
           $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
         }
     }, true);
@@ -629,9 +639,17 @@ appControllers.controller('LocalsearchCtrl',['$scope','Localsearch',function($sc
     }, true);
     $scope.localsearchTable = { 
         data: 'businesses',
+        rowTemplate:'<div style="height: 100%" ng-class="{red: row.getProperty(\'status\') < 1}"><div ng-style="{ \'cursor\': row.cursor }" ng-repeat="col in renderedColumns" ng-class="col.colIndex()" class="ngCell ">' +
+                           '<div class="ngVerticalBar" ng-style="{height: rowHeight}" ng-class="{ ngVerticalBarVisible: !$last }"> </div>' +
+                           '<div ng-cell></div>' +
+                     '</div></div>',
         columnDefs: [{field:'business_id', displayName:'Id',width: 90},
                         {field:'name',displayName:'Name'},
+                        {field:'unique_name',displayName:'Unique'},
                         {field:'user_id',displayName:'UserId'},
+                        {field:'contact_person',displayName:'ContactPerson'},
+                        {field:'phone1',displayName:'Phone'},
+                        {field:'email',displayName:'Email'},
                         {field:'district',displayName:'District'},
                         {field:'categories[0].category',displayName:'Category'},
                     ],
@@ -671,6 +689,7 @@ appControllers.controller('AddLocalsearchCtrl',['$scope','Localsearch','Country'
         'unique_name':'',
         'business_type':'',
         'user_id':'',
+        'contact_person':'',
         'address_line_1':'',
         'address_line_2':'',
         'area_id':'',
@@ -688,6 +707,7 @@ appControllers.controller('AddLocalsearchCtrl',['$scope','Localsearch','Country'
         'working_hours':'',
         'established':'',
         'description':'',
+        'status':'',
         'categories':[],
         'sub_categories':[],
         'features':[],
@@ -696,7 +716,13 @@ appControllers.controller('AddLocalsearchCtrl',['$scope','Localsearch','Country'
     $scope.reset_data=function(){
         $scope.localsearch={};
     }
+    $scope.validate_unique_name = function(){
+        console.log($scope.localsearch.unique_name);
+        Localsearch.query({'unique_name':$scope.localsearch.unique_name},function(data){
+            console.log(data.no_of_results);
+        });
 
+    }
     $scope.country={'country_id':'','country':''};
     $scope.state={'state_id':'','state':''};
     $scope.district={'district_id':'','district':''};
@@ -749,13 +775,15 @@ appControllers.controller('AddLocalsearchCtrl',['$scope','Localsearch','Country'
         });
     }
 
-    $scope.categories=Loc_category.query();
+    $scope.categories=Loc_category.query({'kind':$scope.localsearch.business_type});
+    $scope.$watch('localsearch.business_type', function (newVal, oldVal) {
+        $scope.categories=Loc_category.query({'kind':$scope.localsearch.business_type});
+    });
     $scope.$watch('localsearch.categories', function (newVal, oldVal) {
         var category_id = newVal.join(',');
         get_sub_categories(category_id);
         get_features(category_id);
-        get_products(category_id);
-        
+        get_products(category_id); 
     });
     var get_sub_categories=function(category_id){
         $scope.sub_categories = Loc_sub_category.query({'category_id': category_id});
@@ -772,6 +800,18 @@ appControllers.controller('AddLocalsearchCtrl',['$scope','Localsearch','Country'
         placeholder: "Select a Categories",
          maximumSelectionSize: 3
     };
+
+    $scope.processForm = function(){
+        console.log("processing form..");
+        Localsearch.save($scope.localsearch,function(data){
+            console.log(data);
+            if(data.business_id>0){
+                alert("Successfully registered with id:"+data.business_id);
+            }
+            document.getElementById("userForm").reset();           
+        });
+    }
+    //Map
     var latlng = new google.maps.LatLng(9.9312328, 76.26730410000005);
 
     var mapOptions = {
@@ -792,10 +832,6 @@ appControllers.controller('AddLocalsearchCtrl',['$scope','Localsearch','Country'
             $scope.localsearch.lat=location.lat();
             $scope.localsearch.lng=location.lng();
         })
-        /*setTimeout(function(){
-             $scope.localsearch.lat=location.lat();
-            $scope.localsearch.lng=location.lng();
-        },200);*/
     }
     var placeMarker=function(location)
     {
@@ -829,6 +865,5 @@ appControllers.controller('AddLocalsearchCtrl',['$scope','Localsearch','Country'
           }
         });
     }
-
 
 }])
