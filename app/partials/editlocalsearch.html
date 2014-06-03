@@ -31,7 +31,6 @@
                 <select name="" id="" class="form-control input-sm" ng-model="localsearch.business_type" required>
                     <option value="business">Business</option>
                     <option value="service">Service</option>
-                    <option value="organisation">Organisation</option>
                 </select>
             </div>
             <div class="form-group" >
@@ -71,10 +70,6 @@
             <div class="form-group" ng-class="{'has-error' :userForm.gp.$invalid}">
                 <label for="" class="control-label">Google+ Url</label>
                 <input type="url" name="gp" class="form-control input-sm" ng-model="localsearch.gp">
-            </div>
-            <div class="form-group" ng-class="{'has-error' :userForm.status.$invalid}">
-                <label for="" class="control-label">Status</label>
-                <input type="number" name="status" class="form-control input-sm" ng-model="localsearch.status">
             </div>
         </div>
         <div class="col-sm-4">
@@ -177,15 +172,15 @@
         </div>
         <div id="collapseThree" class="panel-collapse">
             <div class="panel-body">
-                <wysiwyg textarea-id="question" textarea-class="form-control input-sm"  textarea-height="80px" textarea-name="textareaQuestion" textarea-required ng-model="localsearch.description" enable-bootstrap-title="true"></wysiwyg>
+            	<wysiwyg textarea-id="question" textarea-class="form-control input-sm"  textarea-height="80px" textarea-name="textareaQuestion" textarea-required ng-model="localsearch.description" enable-bootstrap-title="true"></wysiwyg>
                 <!-- <textarea name="" id="" cols="30" rows="5" class="form-control input-sm" ng-model="localsearch.description" placeholder="Describe your business/service"></textarea> -->
             </div>
         </div>
     </div>
 </div>
-        <div class="form-group">
-    <button type="submit" class="btn btn-info"  ng-disabled="userForm.$invalid">Save</button>         
+<div class="row">
+    <div class="col-sm-12">
+    <button type="submit" class="btn btn-info"  ng-disabled="userForm.$invalid">Update</button>         
     <button class="btn btn-default" ng-click="reset_data();">Reset</button>         
     </div>
-
-</form>
+</div>

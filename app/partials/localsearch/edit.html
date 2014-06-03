@@ -1,5 +1,5 @@
 <pre>{{localsearch}}</pre>
-
+<pre>{{localsearch.categories}}</pre>
 <form name="userForm" id="userForm" ng-submit="processForm()" novalidate>
 <div class="panel-group" id="accordion">
   <div class="panel panel-default">
@@ -31,7 +31,6 @@
                 <select name="" id="" class="form-control input-sm" ng-model="localsearch.business_type" required>
                     <option value="business">Business</option>
                     <option value="service">Service</option>
-                    <option value="organisation">Organisation</option>
                 </select>
             </div>
             <div class="form-group" >
@@ -71,10 +70,6 @@
             <div class="form-group" ng-class="{'has-error' :userForm.gp.$invalid}">
                 <label for="" class="control-label">Google+ Url</label>
                 <input type="url" name="gp" class="form-control input-sm" ng-model="localsearch.gp">
-            </div>
-            <div class="form-group" ng-class="{'has-error' :userForm.status.$invalid}">
-                <label for="" class="control-label">Status</label>
-                <input type="number" name="status" class="form-control input-sm" ng-model="localsearch.status">
             </div>
         </div>
         <div class="col-sm-4">
@@ -130,19 +125,19 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="" class="control-label">Country</label>
-                        <select ng-model="country" class="form-control input-sm" ng-options="country.country for country in countries" required></select>
+                        <select ng-model="localsearch.country_id" class="form-control input-sm" ng-options="i.country_id as i.country for i in countries" required></select>
                     </div>
                     <div class="form-group">
                         <label for="" class="control-label">State</label>
-                        <select ng-model="state" class="form-control input-sm" ng-options="state.state for state in states" required></select>
+                        <select ng-model="localsearch.state_id" class="form-control input-sm" ng-options="state.state_id as state.state for state in states" required></select>
                     </div>
                     <div class="form-group">
                         <label for="" class="control-label">District</label>
-                        <select ng-model="district" class="form-control input-sm" ng-options="district.district for district in districts" required></select>
+                        <select ng-model="localsearch.district_id" class="form-control input-sm" ng-options="district.district_id as district.district for district in districts" required></select>
                     </div>
                     <div class="form-group">
                         <label for="" class="control-label">Area</label>
-                        <select ng-model="area" class="form-control input-sm" ng-options="area.area for area in areas"></select>
+                        <select ng-model="localsearch.area_id" class="form-control input-sm" ng-options="area.area_id as area.area for area in areas"></select>
                     </div>
                     <div class="form-group">
                         <label for="" class="control-label">Address line 1</label>
@@ -177,15 +172,15 @@
         </div>
         <div id="collapseThree" class="panel-collapse">
             <div class="panel-body">
-                <wysiwyg textarea-id="question" textarea-class="form-control input-sm"  textarea-height="80px" textarea-name="textareaQuestion" textarea-required ng-model="localsearch.description" enable-bootstrap-title="true"></wysiwyg>
+            	<wysiwyg textarea-id="question" textarea-class="form-control input-sm"  textarea-height="80px" textarea-name="textareaQuestion" textarea-required ng-model="localsearch.description" enable-bootstrap-title="true"></wysiwyg>
                 <!-- <textarea name="" id="" cols="30" rows="5" class="form-control input-sm" ng-model="localsearch.description" placeholder="Describe your business/service"></textarea> -->
             </div>
         </div>
     </div>
 </div>
-        <div class="form-group">
-    <button type="submit" class="btn btn-info"  ng-disabled="userForm.$invalid">Save</button>         
+<div class="row">
+    <div class="col-sm-12">
+    <button type="submit" class="btn btn-info"  ng-disabled="userForm.$invalid">Update</button>         
     <button class="btn btn-default" ng-click="reset_data();">Reset</button>         
     </div>
-
-</form>
+</div>

@@ -5,20 +5,28 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">Filter</div>
 				<div class="panel-body"  style="padding:5px;">
-					<input type="text" class="form-control input-sm" placeholder="Business name">
-					<input type="text" class="form-control input-sm" placeholder="Username">
+                    <div class="form-group">
+                        <input type="text" class="form-control input-sm" placeholder="Business name">
+                    </div>
+                    <div class="form-group">
+					   <input type="text" class="form-control input-sm" placeholder="District">
+                    </div>
 					Registered After
 					<input type="date" class="form-control input-sm" plcaeholder="">
 					Registered before
 					<input type="date" class="form-control input-sm" plcaeholder="">
 					Account type
-					<select name="" id="" class="form-control input-sm">
-						<option value=""></option>
-						<option value="">Platinum</option>
-						<option value="">Gold</option>
-						<option value="">Silver</option>
-					</select><br>
-					<button class="btn btn-default  btn-xs form-control">Filter</button>
+                    <div class="form-group">
+					   <select name="" id="" class="form-control input-sm">
+					   	   <option value=""></option>
+					   	   <option value="">Platinum</option>
+					   	   <option value="">Gold</option>
+					   	   <option value="">Silver</option>
+					   </select>
+                    </div>
+                    <div class="form-group">
+					   <button class="btn btn-default  btn-xs form-control">Filter</button>
+                    </div>   
 				</div>
 			</div>
 		</div>
@@ -33,12 +41,13 @@
                     		<span class="glyphicon glyphicon-envelope"></span> Message
                 		</button>
                 		<button type="button" class="btn btn-default btn-sm" ng-disabled="businesses_selected.length!=1">
-                    		<span class="glyphicon glyphicon-pencil"></span> Edit
+                    		<a href="#/localsearch/{{businesses_selected[0].business_id}}"><span class="glyphicon glyphicon-eye-open"></span> View</a>
                 		</button>
-                		<button type="button" class="btn btn-default btn-sm" ng-click="delete_users();" ng-disabled="!businesses_selected.length">
-                	    	<span class="glyphicon glyphicon-trash"></span> Delete
-        		        </button>  
-        		    </div>
+                        <button type="button" class="btn btn-default btn-sm" ng-click="delete_users();" ng-disabled="!businesses_selected.length">
+                            <span class="glyphicon glyphicon-trash"></span> Delete
+                        </button>  
+                    </div>
+
         		</div>
         		<div class="col-sm-6 col-md-3 col-md-offset-3">
           			<div class="input-group">
@@ -55,9 +64,11 @@
 		</div>
 	</div>
 </div>
+
+
 <style>
     .gridStyle{
-        height: 500px;
+        height: 550px;
         width: 100%;
         min-width: 300px;
     }

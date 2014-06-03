@@ -122,7 +122,16 @@ function getLocalsearches(){
 	}
 }
 function getLocalsearch($id){
-	$sql="SELECT * FROM localsearch WHERE business_id=:id";
+	$sql="SELECT l.*,c.country,s.state,d.district,a.area FROM localsearch l  
+				LEFT JOIN countries c ON c.country_id=l.country_id
+				LEFT JOIN states s ON s.state_id=l.state_id
+				LEFT JOIN districts d ON d.district_id=l.district_id
+				LEFT JOIN areas a ON a.area_id=l.area_id
+				LEFT JOIN localsearch_x_categories USING(business_id)
+				LEFT JOIN localsearch_x_sub_categories USING(business_id) 
+				LEFT JOIN localsearch_x_features USING(business_id) 
+				LEFT JOIN localsearch_x_products USING(business_id)  
+				WHERE l.business_id=:id";
 	try{
 		$db = getConnection();
 		$stmt = $db->prepare($sql);
@@ -143,7 +152,7 @@ function getLocalsearch($id){
 function addLocalsearch(){
 	$request = Slim::getInstance()->request();
 	$data = json_decode($request->getBody());
-	$sql = "INSERT INTO localsearch (name,unique_name,caption,business_type,user_id,contact_person,address_line_1,address_line_2,area_id,district_id,state_id,country_id,lat,lng,phone1,phone2,email,website,working_hours,established,description,status) VALUES(:name,:unique_name,:caption,:business_type,:user_id,:contact_person,:address_line_1,:address_line_2,:area_id,:district_id,:state_id,:country_id,:lat,:lng,:phone1,:phone2,:email,:website,:working_hours,:established,:description,:status)";
+	$sql = "INSERT INTO localsearch (name,unique_name,caption,business_type,user_id,contact_person,address_line_1,address_line_2,area_id,district_id,state_id,country_id,lat,lng,phone1,phone2,email,website,fb,gp,working_hours,established,description,status) VALUES(:name,:unique_name,:caption,:business_type,:user_id,:contact_person,:address_line_1,:address_line_2,:area_id,:district_id,:state_id,:country_id,:lat,:lng,:phone1,:phone2,:email,:website,:fb,:gp,:working_hours,:established,:description,:status)";
 	try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -165,6 +174,8 @@ function addLocalsearch(){
         $stmt->bindParam("phone2", $data->phone2);
         $stmt->bindParam("email", $data->email);
         $stmt->bindParam("website", $data->website);
+        $stmt->bindParam("fb", $data->fb);
+        $stmt->bindParam("gp", $data->gp);
         $stmt->bindParam("working_hours", $data->working_hours);
         $stmt->bindParam("established", $data->established);
         $stmt->bindParam("description", $data->description);

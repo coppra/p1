@@ -10,7 +10,9 @@ var cpanelApp = angular.module('cpanelApp', [
   'appServices',
   'appDirectives',
   'ngGrid',
-  'ui.select2'
+  'ui.select2',
+  'wysiwyg.module',
+  'colorpicker.module'
 ]);
 cpanelApp.config(['$stateProvider', '$urlRouterProvider','$locationProvider','$httpProvider', function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     var access = routingConfig.accessLevels;
@@ -78,10 +80,21 @@ cpanelApp.config(['$stateProvider', '$urlRouterProvider','$locationProvider','$h
             templateUrl:'./partials/addlocalsearch.html',
             controller:'AddLocalsearchCtrl'
         })
-        .state('executive.editlocalsearch',{
-            url:'/localsearch/:id',
-            templateUrl:'./partials/edasditlocalsear.html'
-        });
+        .state('executive.viewlocalsearch',{
+            abstract:true,
+            url:'/localsearch/:id/',
+            templateUrl:'./partials/localsearch/viewlocalsearch.html',
+            controller:'ViewLocalsearchCtrl'
+        })
+            .state('executive.viewlocalsearch.home',{
+                url:'',
+                templateUrl:'./partials/localsearch/home.html'
+            })
+            .state('executive.viewlocalsearch.edit',{
+                url:'edit/',
+                templateUrl:'./partials/localsearch/edit.html',
+                controller:'EditLocalsearchCtrl'
+            });
     $stateProvider
         .state('admin',{
             abstract:true,
