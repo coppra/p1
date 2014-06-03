@@ -400,15 +400,18 @@ appControllers.controller('EditLocalsearchCtrl',['$scope','$stateParams','Locals
     }
 
     $scope.categories=Loc_category.query({'kind':$scope.localsearch.business_type});
-
-    /*$scope.$watch('localsearch.business_type', function (newVal, oldVal) {
-        $scope.categories=Loc_category.query({'kind':$scope.localsearch.business_type});
+    $scope.$watch('localsearch.business_type', function (newVal, oldVal) {
+        //$scope.categories=Loc_category.query({'kind':$scope.localsearch.business_type});
     });
+    var x=0;
     $scope.$watch('localsearch.categories', function (newVal, oldVal) {
-        var category_id = newVal.join(',');
-        get_sub_categories(category_id);
-        get_features(category_id);
-        get_products(category_id); 
+        x++;
+        if(x>1){
+            var category_id = newVal.join(',');
+            get_sub_categories(category_id);
+            get_features(category_id);
+            get_products(category_id); 
+        }
     });
     var get_sub_categories=function(category_id){
         $scope.sub_categories = Loc_sub_category.query({'category_id': category_id});
@@ -424,7 +427,17 @@ appControllers.controller('EditLocalsearchCtrl',['$scope','$stateParams','Locals
         allowClear:true,
         placeholder: "Select Categories",
          maximumSelectionSize: 3
-    };*/
+    };
+    $scope.processForm = function(){
+        console.log("processing form..");
+        Localsearch.save($scope.localsearch,function(data){
+            console.log(data);
+            if(data.business_id>0){
+                alert("Successfully registered with id:"+data.business_id);
+            }
+            document.getElementById("userForm").reset();           
+        });
+    }
     $scope.$watch('localsearch.lat', function (newVal, oldVal) {
         set_map();
     });

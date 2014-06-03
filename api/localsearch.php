@@ -141,8 +141,12 @@ function getLocalsearch($id){
         $data = get_object_vars($data);
 		$categories=getCategories($data['business_id']);
 		$sub_categories=getSubCategories($data['business_id']);
+		$features=getFeatures($data['business_id']);
+		$products=getProducts($data['business_id']);
 		$data["categories"]=$categories;
 		$data["sub_categories"]=$sub_categories;
+		$data["features"]=$features;
+		$data["products"]=$products;
         $db = null;
         echo json_encode($data);
 	} catch(PDOException $e) {
@@ -193,6 +197,105 @@ function addLocalsearch(){
         	addProducts($data->business_id,$data->products);
         echo json_encode($data);
     } catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
+function updateLocalsearch($business_id){
+	$request = Slim::getInstance()->request();
+	$data = json_decode($request->getBody());
+	$sql = "UPDATE localsearch SET name=:name, unique_name=:unique_name, caption=:caption, business_type=:business_type, user_id=:user_id, contact_person=:contact_person, address_line_1=:address_line_1, address_line_2=:address_line_2, area_id=:area_id, district_id=:district_id,state_id=:state_id,country_id=:country_id,lat=:lat, lng=:lng, phone1=:phone1, phone2=:phone2, email=:email,website=:website, fb=:fb, gp=:gp, working_hours=:working_hours,established=:established,description=:description,status=:status WHERE business_id=:business_id";
+	try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("name", $data->name);
+        $stmt->bindParam("unique_name", $data->unique_name);
+        $stmt->bindParam("caption", $data->caption);
+        $stmt->bindParam("business_type", $data->business_type);
+        $stmt->bindParam("user_id", $data->user_id);
+        $stmt->bindParam("contact_person", $data->contact_person);
+        $stmt->bindParam("address_line_1", $data->address_line_1);
+        $stmt->bindParam("address_line_2", $data->address_line_2);
+        $stmt->bindParam("area_id", $data->area_id);
+        $stmt->bindParam("district_id", $data->district_id);
+        $stmt->bindParam("state_id", $data->state_id);
+        $stmt->bindParam("country_id", $data->country_id);
+        $stmt->bindParam("lat", $data->lat);
+        $stmt->bindParam("lng", $data->lng);
+        $stmt->bindParam("phone1", $data->phone1);
+        $stmt->bindParam("phone2", $data->phone2);
+        $stmt->bindParam("email", $data->email);
+        $stmt->bindParam("website", $data->website);
+        $stmt->bindParam("fb", $data->fb);
+        $stmt->bindParam("gp", $data->gp);
+        $stmt->bindParam("working_hours", $data->working_hours);
+        $stmt->bindParam("established", $data->established);
+        $stmt->bindParam("description", $data->description);
+        $stmt->bindParam("status", $data->status);
+        $stmt->bindParam("business_id", $business_id);
+    	$stmt->execute();
+        $db = null;
+        deleteCategories($business_id);
+        deleteSubCategories($business_id);
+        deleteFeatures($business_id);
+        deleteProducts($business_id);
+        if(sizeof($data->categories))
+        	addCategories($data->business_id,$data->categories);
+        if(sizeof($data->sub_categories))
+        	addSubCategories($data->business_id,$data->sub_categories);
+        if(sizeof($data->features))
+        	addFeatures($data->business_id,$data->features);
+        if(sizeof($data->products))
+        	addProducts($data->business_id,$data->products);
+        echo json_encode($data);
+    } catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
+function deleteCategories($business_id){
+	$sql="DELETE FROM localsearch_x_categories WHERE business_id=:business_id";
+	try{
+		$db = getConnection();
+		$stmt = $db->prepare($sql);
+        $stmt->bindParam("business_id", $business_id);
+        $stmt->execute();
+        $db = null;
+	} catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
+function deleteSubCategories($business_id){
+	$sql="DELETE FROM localsearch_x_sub_categories WHERE business_id=:business_id";
+	try{
+		$db = getConnection();
+		$stmt = $db->prepare($sql);
+        $stmt->bindParam("business_id", $business_id);
+        $stmt->execute();
+        $db = null;
+	} catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
+function deleteFeatures($business_id){
+	$sql="DELETE FROM localsearch_x_features WHERE business_id=:business_id";
+	try{
+		$db = getConnection();
+		$stmt = $db->prepare($sql);
+        $stmt->bindParam("business_id", $business_id);
+        $stmt->execute();
+        $db = null;
+	} catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
+function deleteProducts($business_id){
+	$sql="DELETE FROM localsearch_x_products WHERE business_id=:business_id";
+	try{
+		$db = getConnection();
+		$stmt = $db->prepare($sql);
+        $stmt->bindParam("business_id", $business_id);
+        $stmt->execute();
+        $db = null;
+	} catch(PDOException $e) {
         echo '{"error":{"text":'. $e->getMessage() .'}}';
     }
 }
