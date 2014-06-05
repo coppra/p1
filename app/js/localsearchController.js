@@ -82,9 +82,11 @@ appControllers.controller('LocalsearchCtrl',['$scope','Localsearch',function($sc
         var deleted=0;
         if(confirm("Delete "+businesses_selected_count+" businesss?")){
             $.each($scope.businesses_selected, function(key, value) {
-                business.delete({},{'Id':value.business_id},function(data){
+                Localsearch.delete({},{'Id':value.business_id},function(data){
                     deleted++;
-                    if(deleted == businesss_selected_count){
+                    console.log(deleted+" = "+businesses_selected_count);
+                    if(deleted == businesses_selected_count){
+                        alert("deleted")
                         $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
                         $scope.businesss_selected=[];
                     }
@@ -93,7 +95,32 @@ appControllers.controller('LocalsearchCtrl',['$scope','Localsearch',function($sc
         }
     }
 }])
-appControllers.controller('AddLocalsearchCtrl',['$scope','Localsearch','Country','State','District','Area','Loc_category','Loc_sub_category','Loc_feature','Loc_product',function($scope,Localsearch,Country,State,District,Area,Loc_category,Loc_sub_category,Loc_feature,Loc_product){
+appControllers.controller('AddLocalsearchCtrl',['$scope','Localsearch','Country','State','District','Area','Loc_category','Loc_sub_category','Loc_feature','Loc_product','$upload',function($scope,Localsearch,Country,State,District,Area,Loc_category,Loc_sub_category,Loc_feature,Loc_product,$upload){
+    
+    $scope.onFileSelect = function($files) {
+        $scope.profile_pic = $files[0];
+    };
+    $scope.onFileSelect2 = function($files) {
+        $scope.cover_pic = $files[0];
+    };
+    var save_pic = function(id,category,kind){
+        console.log($scope.profile_pic);
+        var data ={'id':id,'category':category,'kind':kind};
+        if(kind == 'profile')
+            var file = $scope.profile_pic;
+        else if(kind == 'cover')
+            var file = $scope.cover_pic;
+        $scope.upload = $upload.upload({
+            url: '../api/upload.php?files',
+             data: data,
+             // data: {myObj: data},
+            file: file
+          }).progress(function(evt) {
+            console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total) );
+          }).success(function(data, status, headers, config) {
+            console.log(data);
+          });
+    };
     $scope.localsearch={
         'name':'',
         'caption':'',
@@ -209,6 +236,11 @@ appControllers.controller('AddLocalsearchCtrl',['$scope','Localsearch','Country'
             console.log(data);
             if(data.business_id>0){
                 alert("Successfully registered with id:"+data.business_id);
+                console.log($scope.profile_pic);
+                if($scope.profile_pic)
+                    save_pic(data.business_id,'localsearch','profile');
+                if($scope.cover_pic)
+                    save_pic(data.business_id,'localsearch','cover');
             }
             document.getElementById("userForm").reset();           
         });
@@ -271,6 +303,14 @@ appControllers.controller('AddLocalsearchCtrl',['$scope','Localsearch','Country'
 }])
 appControllers.controller('ViewLocalsearchCtrl',['$scope','$stateParams',function($scope,$stateParams){
     $scope.id=$stateParams.id;
+}])
+appControllers.controller('HomeLocalsearchCtrl',['$scope','$stateParams','Localsearch',function($scope,$stateParams,Localsearch){
+    $scope.business_id = $stateParams.id;
+    $scope.name='';
+    Localsearch.query({},{'Id':$stateParams.id},function(data){
+        console.log(data);
+        $scope.name=data.name;
+    });
 }])
 appControllers.controller('EditLocalsearchCtrl',['$scope','$stateParams','Localsearch','Country','State','District','Area','Loc_category','Loc_sub_category','Loc_feature','Loc_product',function($scope,$stateParams,Localsearch,Country,State,District,Area,Loc_category,Loc_sub_category,Loc_feature,Loc_product){
     $scope.localsearch={
@@ -375,6 +415,7 @@ appControllers.controller('EditLocalsearchCtrl',['$scope','$stateParams','Locals
         var c = findElement($scope.countries, "country_id", $scope.localsearch.country_id);
         var s = findElement($scope.states, "state_id",$scope.localsearch.state_id);
         var d = findElement($scope.districts, "district_id", $scope.localsearch.district_id);
+        if(c && s && d)
         codeAddress(d.district+", "+s.state+", "+c.country);
     });
     $scope.$watch('localsearch.area_id',function (newVal,oldVal){
@@ -383,6 +424,7 @@ appControllers.controller('EditLocalsearchCtrl',['$scope','$stateParams','Locals
             var s = findElement($scope.states, "state_id",$scope.localsearch.state_id);
             var d = findElement($scope.districts, "district_id", $scope.localsearch.district_id);
             var a = findElement($scope.areas, "area_id", $scope.localsearch.area_id);
+            if(c && s && d)
             codeAddress(a.area+", "+d.district+", "+s.state+", "+c.country);
         }
     });
@@ -400,13 +442,24 @@ appControllers.controller('EditLocalsearchCtrl',['$scope','$stateParams','Locals
     }
 
     $scope.categories=Loc_category.query({'kind':$scope.localsearch.business_type});
+    var y=0;
     $scope.$watch('localsearch.business_type', function (newVal, oldVal) {
-        //$scope.categories=Loc_category.query({'kind':$scope.localsearch.business_type});
+        y++;
+        if(y>2){
+            $scope.categories=Loc_category.query({'kind':$scope.localsearch.business_type});
+            $scope.localsearch.categories=[];
+            $scope.localsearch.sub_categories=[];
+            $scope.localsearch.features=[];
+            $scope.localsearch.products=[];
+        }
     });
     var x=0;
     $scope.$watch('localsearch.categories', function (newVal, oldVal) {
         x++;
         if(x>1){
+            $scope.sub_categories=[];
+            $scope.features=[];
+            $scope.products=[];
             var category_id = newVal.join(',');
             get_sub_categories(category_id);
             get_features(category_id);
@@ -429,14 +482,11 @@ appControllers.controller('EditLocalsearchCtrl',['$scope','$stateParams','Locals
          maximumSelectionSize: 3
     };
     $scope.processForm = function(){
-        console.log("processing form..");
-        Localsearch.save($scope.localsearch,function(data){
-            console.log(data);
-            if(data.business_id>0){
-                alert("Successfully registered with id:"+data.business_id);
+        Localsearch.save({'Id':$scope.localsearch.business_id},$scope.localsearch,function(data){
+            if(data.business_id){
+                alert("Successfully updated");
             }
-            document.getElementById("userForm").reset();           
-        });
+        })
     }
     $scope.$watch('localsearch.lat', function (newVal, oldVal) {
         set_map();

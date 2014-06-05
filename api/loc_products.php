@@ -50,13 +50,12 @@ function getLocProduct($id){
 function addLocProduct(){
 	$request = Slim::getInstance()->request();
 	$data = json_decode($request->getBody());
-	$sql = "INSERT INTO loc_products (product,category_id,priority) VALUES(:product,:category_id,:priority)";
+	$sql = "INSERT INTO loc_products (product,category_id) VALUES(:product,:category_id)";
 	try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("product", $data->product);
         $stmt->bindParam("category_id", $data->category_id);
-        $stmt->bindParam("priority", $data->priority);
     	$stmt->execute();
         $data->product_id = $db->lastInsertId();
         $db = null;

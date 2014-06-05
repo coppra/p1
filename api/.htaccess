@@ -1,13 +1,19 @@
+Options +FollowSymLinks -Multiviews
+
+<IfModule mod_rewrite.c>
+SetEnv HTTP_MOD_REWRITE On
+
 RewriteEngine On
 
 # Some hosts may require you to use the `RewriteBase` directive.
 # If you need to use the `RewriteBase` directive, it should be the
 # absolute physical path to the directory that contains this htaccess file.
 #
-# RewriteBase /
+#RewriteBase /gofindy/api
 
-RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteRule ^(.*)$ index.php [QSA,L]
+RewriteRule ^admins(.+)?$ admins.php [QSA,L]
 RewriteRule ^users(.+)?$ users.php [QSA,L]
 RewriteRule ^roles(.+)?$ roles.php 
 RewriteRule ^locations(.+)?$ locations.php 
@@ -15,3 +21,6 @@ RewriteRule ^categories(.+)?$ categories.php
 RewriteRule ^localsearch(.+)?$ localsearch.php 
 RewriteRule ^loc_features(.+)?$ loc_features.php 
 RewriteRule ^loc_products(.+)?$ loc_products.php 
+
+
+</IfModule>

@@ -104,11 +104,11 @@
             </div>
             <div class="form-group">
                 <label for="" class="control-label">Logo</label>
-                <input type="file" class="form-control input-sm">
+                <input type="file" name="logo" class="form-control input-sm" ng-file-select="onFileSelect($files)">
             </div>
             <div class="form-group">
                 <label for="" class="control-label">Cover photo</label>
-                <input type="file" class="form-control input-sm">
+                <input type="file" name="cover" class="form-control input-sm" ng-file-select="onFileSelect2($files)">
             </div>
             
         </div>
@@ -183,9 +183,13 @@
         </div>
     </div>
 </div>
-        <div class="form-group">
+<div class="form-group">
     <button type="submit" class="btn btn-info"  ng-disabled="userForm.$invalid">Save</button>         
     <button class="btn btn-default" ng-click="reset_data();">Reset</button>         
-    </div>
-
+</div>
+{{userForm.unique_name.$error}}
 </form>
+
+
+<!--   <input type="file" ng-file-select="onFileSelect($files)" >
+<button ng-click="upload.abort()">Cancel Upload</button> -->

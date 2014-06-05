@@ -1,4 +1,4 @@
-<pre style="height:100px;">{{localsearch}}</pre>
+<pre>{{localsearch}}</pre>
 <form name="userForm" id="userForm" ng-submit="processForm()" novalidate>
 <div class="panel-group" id="accordion">
   <div class="panel panel-default">
@@ -44,7 +44,7 @@
         <div class="col-sm-4">
         	<div class="form-group" ng-class="{'has-error' : !userForm.user_id.$pristine && userForm.user_id.$invalid}">
                 <label for="" class="control-label">Owner Account Id</label>
-                <input type="number" name="user_id" class="form-control input-sm" ng-model="localsearch.user_id" valid-account="" required>
+                <input type="text" name="user_id" class="form-control input-sm" ng-model="localsearch.user_id" valid-account="" ng-pattern="/^[0-9]*$/" required>
             </div>
             <div class="form-group">
                 <label for="" class="control-label">Contact person</label>
@@ -174,7 +174,8 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-    <button type="submit" class="btn btn-info"  ng-disabled="userForm.$invalid">Update</button>         
+    <button type="submit" class="btn btn-info"  ng-disabled="false">Update</button>         
     <button class="btn btn-default" ng-click="reset_data();">Reset</button>         
     </div>
 </div>
+</form>

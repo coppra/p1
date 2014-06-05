@@ -8,8 +8,8 @@ appServices.factory('Auth', function($http, $cookieStore){
 
     var accessLevels = routingConfig.accessLevels
         , userRoles = routingConfig.userRoles
-        , currentUser = $cookieStore.get('user') || { username: '', role: userRoles.public };
-    $cookieStore.remove('user');
+        , currentUser = $cookieStore.get('admin') || { email: '', role: userRoles.public };
+    $cookieStore.remove('admin');
     //console.log(currentUser);
     function changeUser(user) {
         angular.extend(currentUser, user);
@@ -26,7 +26,7 @@ appServices.factory('Auth', function($http, $cookieStore){
             if(user === undefined) {
                 user = currentUser;
             }
-            return user.role.title === userRoles.user.title || user.role.title === userRoles.admin.title;
+             return user.role.title === userRoles.super_admin.title || user.role.title === userRoles.admin.title ||  user.role.title === userRoles.franchisee.title;
         },
         register: function(user, success, error) {
             $http.post('/register', user).success(function(res) {
@@ -35,7 +35,7 @@ appServices.factory('Auth', function($http, $cookieStore){
             }).error(error);
         },
         login: function(user, success, error) {
-            $http.post('../api/users/authenticate/',user).success(function(data){
+            $http.post('../api/admins/authenticate/',user).success(function(data){
                 console.log(data);
                 changeUser(data);
                 success(data);
@@ -48,7 +48,7 @@ appServices.factory('Auth', function($http, $cookieStore){
                     role: userRoles.public
                 });
                 success();*/
-            $http.post('../api/users/logout/').success(function(){
+            $http.post('../api/admins/logout/').success(function(){
                 changeUser({
                     username: '',
                     role: userRoles.public
@@ -136,6 +136,6 @@ appServices.factory('Loc_product',['$resource',
 appServices.factory('Localsearch',['$resource',
     function($resource){
         return $resource('../api/localsearch/:Id?', {Id:"@Id"},{
-            query: {method:'GET', params:{}, isArray:false}
+            query: {method:'GET', isArray:false}
         });
     }]);

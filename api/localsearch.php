@@ -21,8 +21,8 @@ function getLocalsearches(){
 	$limit=0;
 	$no_of_pages = 0;
 	$no_of_rows = 0;
-	$conditions_params=['name','unique_name','user_id','country_id','state_id','district_id','area_id','status'];
-	$conditions_params_2=['category_id','sub_category_id','feature_id','product_id'];
+	$conditions_params=array('name','unique_name','user_id','country_id','state_id','district_id','area_id','status');
+	$conditions_params_2=array('category_id','sub_category_id','feature_id','product_id');
 	$conditions = array();
 	$query_condition='';
 	$app = Slim::getInstance();
@@ -251,6 +251,20 @@ function updateLocalsearch($business_id){
         echo '{"error":{"text":'. $e->getMessage() .'}}';
     }
 }
+
+function deleteLocalsearch($business_id){
+	$sql="DELETE FROM localsearch WHERE business_id=:business_id";
+	try{
+		$db = getConnection();
+		$stmt = $db->prepare($sql);
+        $stmt->bindParam("business_id", $business_id);
+        $stmt->execute();
+        $db = null;
+	} catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
+
 function deleteCategories($business_id){
 	$sql="DELETE FROM localsearch_x_categories WHERE business_id=:business_id";
 	try{

@@ -12,7 +12,8 @@ var cpanelApp = angular.module('cpanelApp', [
   'ngGrid',
   'ui.select2',
   'wysiwyg.module',
-  'colorpicker.module'
+  'colorpicker.module',
+  'angularFileUpload'
 ]);
 cpanelApp.config(['$stateProvider', '$urlRouterProvider','$locationProvider','$httpProvider', function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     var access = routingConfig.accessLevels;
@@ -48,7 +49,7 @@ cpanelApp.config(['$stateProvider', '$urlRouterProvider','$locationProvider','$h
             abstract:true,
             template:"<ui-view>",
             data:{
-                access:access.admin
+                access:access.franchisee
             }
         })
         .state('executive.profile',{
@@ -88,7 +89,8 @@ cpanelApp.config(['$stateProvider', '$urlRouterProvider','$locationProvider','$h
         })
             .state('executive.viewlocalsearch.home',{
                 url:'',
-                templateUrl:'./partials/localsearch/home.html'
+                templateUrl:'./partials/localsearch/home.html',
+                controller:'HomeLocalsearchCtrl'
             })
             .state('executive.viewlocalsearch.edit',{
                 url:'edit/',
@@ -100,7 +102,7 @@ cpanelApp.config(['$stateProvider', '$urlRouterProvider','$locationProvider','$h
             abstract:true,
             template:"<ui-view>",
             data:{
-                access:access.admin
+                access:access.franchisee
             }
         })
         .state('admin.location',{
@@ -188,7 +190,7 @@ cpanelApp.config(['$stateProvider', '$urlRouterProvider','$locationProvider','$h
             
             if(fromState.url === '^') {
                 if(Auth.isLoggedIn()) {
-                    $state.go('user.home');
+                    $state.go('executive.profile.dashboard');
                 } else {
                     $rootScope.error = null;
                     $state.go('anon.login');
