@@ -31,17 +31,14 @@
                 <li class="dropdown" data-access-level="accessLevels.executive" active-nav>
                     <a href="" class="dropdown-toggle" data-toggle="dropdown">Users <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li data-access-level="accessLevels.executive" active-nav><a href="#/users">Users</a></li>
+                        <li data-access-level="accessLevels.executive" active-nav><a href="#/user">Users</a></li>
                         <li class="divider"></li>
-                        <li data-access-level="accessLevels.support_center" active-nav><a href="">Executives</a></li>
-                        <li data-access-level="accessLevels.franchisee" active-nav><a href="">Support Center</a></li>
-                        <li data-access-level="accessLevels.supervisor" active-nav><a href="">Franchisee</a></li>
-                        <li data-access-level="accessLevels.admin" active-nav><a href="">Supervisor</a></li>
-                        <li data-access-level="accessLevels.super_admin" active-nav><a href="">Admin</a></li>
+                        <li data-access-level="accessLevels.support_center" active-nav><a href="#/admin">Admins</a></li>
                     </ul>
                 </li>
                 <li data-access-level="accessLevels.free_user" active-nav><a href="">Messages <span class="badge">2</span></a></li>
                 <li data-access-level="accessLevels.executive" active-nav><a href="#/localsearch">Local search </a></li>
+                <li data-access-level="accessLevels.executive" active-nav><a href="#/classified">Classified </a></li>
                 <li data-access-level="accessLevels.executive" active-nav><a href="">Smartcard </a></li>
                 <li class="dropdown">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown">Categories <b class="caret"></b></a>
@@ -73,7 +70,7 @@
       </div>
     	<div ui-view class="view-frame"></div>
   	</div>
-    <div id="alertBox" class="alert alert-danger alert-dismissable" ng-show="error">
+    <div id="alertBox" class="alert alert-danger alert-dismissable col-md-6 col-md-offset-3" ng-show="error">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
       {{error}}
     </div>
@@ -101,7 +98,10 @@
   	<script src="js/app.js"></script>
   	<script src="js/animations.js"></script>
     <script src="js/controllers.js"></script>
-  	<script src="js/localsearchController.js"></script>
+    <script src="js/adminController.js"></script>
+    <script src="js/userController.js"></script>
+    <script src="js/localsearchController.js"></script>
+  	<script src="js/classifiedController.js"></script>
   	<script src="js/filters.js"></script>
     <script src="js/services.js"></script>
   	<script src="js/directives.js"></script>

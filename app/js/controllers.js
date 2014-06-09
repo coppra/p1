@@ -63,7 +63,6 @@ appControllers.controller('UserListCtrl',['$scope','User','$filter','$http','ngT
         setTimeout(function () {
             var data;
             User.query({},{},function(largeLoad){
-                console.log(largeLoad.users);
                 $scope.setPagingData(largeLoad.users,page,pageSize);
             });
         }, 100);

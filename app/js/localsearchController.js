@@ -88,13 +88,13 @@ appControllers.controller('LocalsearchCtrl',['$scope','Localsearch',function($sc
                     if(deleted == businesses_selected_count){
                         alert("deleted")
                         $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
-                        $scope.businesss_selected=[];
+                        $scope.businesses_selected.length=0;
                     }
                 });
             });
         }
     }
-}])
+}]);
 appControllers.controller('AddLocalsearchCtrl',['$scope','Localsearch','Country','State','District','Area','Loc_category','Loc_sub_category','Loc_feature','Loc_product','$upload',function($scope,Localsearch,Country,State,District,Area,Loc_category,Loc_sub_category,Loc_feature,Loc_product,$upload){
     
     $scope.onFileSelect = function($files) {
@@ -144,7 +144,9 @@ appControllers.controller('AddLocalsearchCtrl',['$scope','Localsearch','Country'
         'gp':'',
         'working_hours':'',
         'established':'',
+        'message':'',
         'description':'',
+        'details':'',
         'status':1,
         'categories':[],
         'sub_categories':[],
@@ -300,10 +302,10 @@ appControllers.controller('AddLocalsearchCtrl',['$scope','Localsearch','Country'
         });
     }
 
-}])
+}]);
 appControllers.controller('ViewLocalsearchCtrl',['$scope','$stateParams',function($scope,$stateParams){
     $scope.id=$stateParams.id;
-}])
+}]);
 appControllers.controller('HomeLocalsearchCtrl',['$scope','$stateParams','Localsearch',function($scope,$stateParams,Localsearch){
     $scope.business_id = $stateParams.id;
     $scope.name='';
@@ -311,7 +313,7 @@ appControllers.controller('HomeLocalsearchCtrl',['$scope','$stateParams','Locals
         console.log(data);
         $scope.name=data.name;
     });
-}])
+}]);
 appControllers.controller('EditLocalsearchCtrl',['$scope','$stateParams','Localsearch','Country','State','District','Area','Loc_category','Loc_sub_category','Loc_feature','Loc_product',function($scope,$stateParams,Localsearch,Country,State,District,Area,Loc_category,Loc_sub_category,Loc_feature,Loc_product){
     $scope.localsearch={
         'name':'',

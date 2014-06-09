@@ -1,0 +1,127 @@
+<pre>{{user}}</pre>
+<form name="userForm" id="userForm" ng-submit="processForm()" novalidate>
+<div class="form-group" ng-class="{'has-error' : !userForm.admin_id.$pristine && userForm.admin_id.$invalid}">
+       <label for="" class="control-label">AdminId</label>
+       <input type="text" name="admin_id" id="admin_id" class="form-control input-sm" ng-model="user.admin_id" valid-admin="" required required>
+   </div>
+<div class="panel-group" id="accordion">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+          User Details
+        </a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in">
+      <div class="panel-body">
+       <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">  
+                <label class="control-label" for="name">Title (Acc type)</label>
+                <select name="title" id="" class="form-control input-sm" ng-model="user.title">
+                    <option value="0_free">Free</option>
+                    <option value="1_silver">Silver</option>
+                    <option value="2_gold">Gold</option>
+                    <option value="3_platinum">Platinum</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">First Name</label>
+                <input type="text" class="form-control input-sm" ng-model="user.fname" required>
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Last Name</label>
+                <input type="text" name="" class="form-control input-sm" ng-model="user.lname" required>
+            </div> 
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group" ng-class="{'has-error' : !userForm.email.$pristine && userForm.email.$invalid}">
+                <label for="" class="control-label">Email Id</label>
+                <input type="email" name="email" class="form-control input-sm" ng-model="user.email" unique-user-email="" >
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Phone number</label>
+                <input type="text" class="form-control input-sm" ng-model="user.phone1">
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Alternate phone number</label>
+                <input type="text" class="form-control input-sm" ng-model="user.phone2">
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="" class="control-label">Status</label>
+                <select name="" id="" class="form-control input-sm" ng-model="user.status">
+                    <option value="active">Acitve</option>
+                    <option value="inactive">Inavctive</option>
+                </select>
+            </div>
+            <div class="form-group" ng-class="{ 'has-error' : !userForm.repassword.$pristine && userForm.repassword.$invalid}">
+                <label for="" class="control-label">Password</label>
+                <input type="password" id="password" name="password" class="form-control input-sm" ng-model="user.password" required>
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Retype password</label>
+                <input type="password" id="repassword" name="repassword" class="form-control input-sm" ng-model="repassword"  pw-check="password" required>
+            </div>
+
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+          Location details
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse ">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="" class="control-label">Country</label>
+                        <select ng-model="country" class="form-control input-sm" ng-options="country.country for country in countries" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="control-label">State</label>
+                        <select ng-model="state" class="form-control input-sm" ng-options="state.state for state in states" required></select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="" class="control-label">District</label>
+                        <select ng-model="district" class="form-control input-sm" ng-options="district.district for district in districts" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="control-label">Area</label>
+                        <select ng-model="area" class="form-control input-sm" ng-options="area.area for area in areas"></select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="" class="control-label">Address line 1</label>
+                        <input type="text" class="form-control input-sm" ng-model="user.address_line_1">
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="control-label">Address line 2</label>
+                        <input type="text" class="form-control input-sm" ng-model="user.address_line_2">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <button type="submit" class="btn btn-info"  ng-disabled="userForm.$invalid">Save</button>         
+    <button class="btn btn-default" ng-click="reset_data();">Reset</button>         
+</div>
+</form>
+
+
+<!--   <input type="file" ng-file-select="onFileSelect($files)" >
+<button ng-click="upload.abort()">Cancel Upload</button> -->

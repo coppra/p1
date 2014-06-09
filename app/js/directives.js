@@ -119,6 +119,69 @@ appDirectives.directive('uniqueUniquename', function($http,Localsearch) {
         }
       };
 });
+appDirectives.directive('uniqueEmail', function($http,Admin) {
+      return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function (scope, element, attrs, ngModel) {
+
+            function validate(value) {
+                Admin.query({'email': ngModel.$viewValue},function(data){
+                    if (data.no_of_results == 0 ) {
+                      ngModel.$setValidity('unique', true);
+                    } else {
+                      ngModel.$setValidity('unique', false);
+                    }
+                });
+            }
+            scope.$watch( function() {
+              return ngModel.$viewValue;
+            }, validate);
+        }
+      };
+});
+appDirectives.directive('uniqueUserEmail', function($http,User) {
+      return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function (scope, element, attrs, ngModel) {
+
+            function validate(value) {
+                User.query({'email': ngModel.$viewValue},function(data){
+                    if (data.no_of_results == 0 ) {
+                      ngModel.$setValidity('unique', true);
+                    } else {
+                      ngModel.$setValidity('unique', false);
+                    }
+                });
+            }
+            scope.$watch( function() {
+              return ngModel.$viewValue;
+            }, validate);
+        }
+      };
+});
+appDirectives.directive('validAdmin', function($http,Admin) {
+      return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function (scope, element, attrs, ngModel) {
+
+            function validate(value) {
+                Admin.query({'Id': ngModel.$viewValue},{},function(data){
+                    if (data.admin_id == ngModel.$viewValue ) {
+                      ngModel.$setValidity('valid', true);
+                    } else {
+                      ngModel.$setValidity('valid', false);
+                    }
+                });
+            }
+            scope.$watch( function() {
+              return ngModel.$viewValue;
+            }, validate);
+        }
+      };
+});
 appDirectives.directive('validAccount', function($http,User) {
       return {
         restrict: 'A',

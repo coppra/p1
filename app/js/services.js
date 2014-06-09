@@ -61,28 +61,26 @@ appServices.factory('Auth', function($http, $cookieStore){
         user: currentUser
     };
 });
-appServices.factory('User',['$resource',
-    function($resource){
-        return $resource('../api/users/:Id?',{Id:"@Id"},{
-            query:{method:'GET','params':{},isArray:false},
-            save:{method:'POST','params':{},isArray:false}
-        });
-    }
-]);
-appServices.factory('Role',['$resource',
-    function($resource){
-        return $resource('../api/roles/',{
-            query:{method:'GET','params':{},isArray:true}
-        })
-    }
-]);
-appServices.factory('Country',['$resource',
-	function($resource){
-		return $resource('../api/locations/country/:Id?', {Id:"@Id"}, {
-      		query: {method:'GET', params:{}, isArray:true}
-    	});
-	}
-]);
+appServices.factory('Admin',['$resource',function($resource){
+    return $resource('../api/admins/:Id?',{Id:"@Id"},{
+        query:{method:'GET','params':{},isArray:false}
+    });
+}]);
+appServices.factory('User',['$resource',function($resource){
+    return $resource('../api/users/:Id?',{Id:"@Id"},{
+        query:{method:'GET','params':{},isArray:false}
+    });
+}]);
+appServices.factory('Role',['$resource',function($resource){
+    return $resource('../api/roles/',{
+        query:{method:'GET','params':{},isArray:true}
+    });
+}]);
+appServices.factory('Country',['$resource',function($resource){
+	return $resource('../api/locations/country/:Id?', {Id:"@Id"}, {
+  		query:{method:'GET','params':{}, isArray:true}
+	});
+}]);
 appServices.factory('State',['$resource',
 	function($resource){
 		return $resource('../api/locations/state/:Id?', {Id:"@Id"}, {
@@ -133,9 +131,33 @@ appServices.factory('Loc_product',['$resource',
         });
     }
 ]);
-appServices.factory('Localsearch',['$resource',
-    function($resource){
-        return $resource('../api/localsearch/:Id?', {Id:"@Id"},{
-            query: {method:'GET', isArray:false}
-        });
-    }]);
+appServices.factory('Localsearch',['$resource',function($resource){
+    return $resource('../api/localsearch/:Id?', {Id:"@Id"},{
+        query: {method:'GET', isArray:false}
+    });
+}]);
+appServices.factory('Cla_category',['$resource',function($resource){
+    return $resource('../api/categories/cla/:Id?', {Id:"@Id"}, {
+        query: {method:'GET', params:{}, isArray:true}
+    });
+}]);
+appServices.factory('Cla_sub_category',['$resource',function($resource){
+    return $resource('../api/categories/cla/sub/:Id?', {Id:"@Id"}, {
+        query: {method:'GET', params:{}, isArray:true}
+    });
+}]);
+appServices.factory('Cla_feature',['$resource',function($resource){
+    return $resource('../api/cla_features/:Id?', {Id:"@Id"}, {
+        query: {method:'GET', params:{}, isArray:true}
+    });
+}]);
+appServices.factory('Cla_spec',['$resource',function($resource){
+    return $resource('../api/cla_specs/:Id?', {Id:"@Id"}, {
+        query: {method:'GET', params:{}, isArray:true}
+    });
+}]);
+appServices.factory('Classified',['$resource',function($resource){
+    return $resource('../api/classifieds/:Id?', {Id:"@Id"},{
+        query: {method:'GET', isArray:false}
+    });
+}]);

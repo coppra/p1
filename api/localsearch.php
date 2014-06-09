@@ -76,6 +76,7 @@ function getLocalsearches(){
 				LEFT JOIN localsearch_x_features USING(business_id) 
 				LEFT JOIN localsearch_x_products USING(business_id) "
 				.$query_condition;
+    // change * to some important fields -- too much data
 	$sql_2 = "SELECT DISTINCT l.*,c.country,s.state,d.district,a.area FROM localsearch l 
 				LEFT JOIN countries c ON c.country_id=l.country_id
 				LEFT JOIN states s ON s.state_id=l.state_id
@@ -138,6 +139,9 @@ function getLocalsearch($id){
         $stmt->bindParam("id", $id);
         $stmt->execute();
         $data = $stmt->fetchObject();
+        if(!$data){
+            return;
+        }
         $data = get_object_vars($data);
 		$categories=getCategories($data['business_id']);
 		$sub_categories=getSubCategories($data['business_id']);
@@ -156,7 +160,7 @@ function getLocalsearch($id){
 function addLocalsearch(){
 	$request = Slim::getInstance()->request();
 	$data = json_decode($request->getBody());
-	$sql = "INSERT INTO localsearch (name,unique_name,caption,business_type,user_id,contact_person,address_line_1,address_line_2,area_id,district_id,state_id,country_id,lat,lng,phone1,phone2,email,website,fb,gp,working_hours,established,description,status) VALUES(:name,:unique_name,:caption,:business_type,:user_id,:contact_person,:address_line_1,:address_line_2,:area_id,:district_id,:state_id,:country_id,:lat,:lng,:phone1,:phone2,:email,:website,:fb,:gp,:working_hours,:established,:description,:status)";
+	$sql = "INSERT INTO localsearch (name,unique_name,caption,business_type,user_id,contact_person,address_line_1,address_line_2,area_id,district_id,state_id,country_id,lat,lng,phone1,phone2,email,website,fb,gp,working_hours,established,message,description,details,status) VALUES(:name,:unique_name,:caption,:business_type,:user_id,:contact_person,:address_line_1,:address_line_2,:area_id,:district_id,:state_id,:country_id,:lat,:lng,:phone1,:phone2,:email,:website,:fb,:gp,:working_hours,:established,:message,:description,:details,:status)";
 	try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -182,7 +186,9 @@ function addLocalsearch(){
         $stmt->bindParam("gp", $data->gp);
         $stmt->bindParam("working_hours", $data->working_hours);
         $stmt->bindParam("established", $data->established);
+        $stmt->bindParam("message", $data->message);
         $stmt->bindParam("description", $data->description);
+        $stmt->bindParam("details", $data->details);
         $stmt->bindParam("status", $data->status);
     	$stmt->execute();
         $data->business_id = $db->lastInsertId();
@@ -203,7 +209,7 @@ function addLocalsearch(){
 function updateLocalsearch($business_id){
 	$request = Slim::getInstance()->request();
 	$data = json_decode($request->getBody());
-	$sql = "UPDATE localsearch SET name=:name, unique_name=:unique_name, caption=:caption, business_type=:business_type, user_id=:user_id, contact_person=:contact_person, address_line_1=:address_line_1, address_line_2=:address_line_2, area_id=:area_id, district_id=:district_id,state_id=:state_id,country_id=:country_id,lat=:lat, lng=:lng, phone1=:phone1, phone2=:phone2, email=:email,website=:website, fb=:fb, gp=:gp, working_hours=:working_hours,established=:established,description=:description,status=:status WHERE business_id=:business_id";
+	$sql = "UPDATE localsearch SET name=:name, unique_name=:unique_name, caption=:caption, business_type=:business_type, user_id=:user_id, contact_person=:contact_person, address_line_1=:address_line_1, address_line_2=:address_line_2, area_id=:area_id, district_id=:district_id,state_id=:state_id,country_id=:country_id,lat=:lat, lng=:lng, phone1=:phone1, phone2=:phone2, email=:email,website=:website, fb=:fb, gp=:gp, working_hours=:working_hours,established=:established,message=:message,description=:description,details=:details,status=:status WHERE business_id=:business_id";
 	try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
@@ -229,7 +235,9 @@ function updateLocalsearch($business_id){
         $stmt->bindParam("gp", $data->gp);
         $stmt->bindParam("working_hours", $data->working_hours);
         $stmt->bindParam("established", $data->established);
+        $stmt->bindParam("message", $data->message);
         $stmt->bindParam("description", $data->description);
+        $stmt->bindParam("details", $data->details);
         $stmt->bindParam("status", $data->status);
         $stmt->bindParam("business_id", $business_id);
     	$stmt->execute();

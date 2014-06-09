@@ -1,0 +1,157 @@
+<pre>{{classified}}</pre>
+<form name="userForm" id="userForm" ng-submit="processForm()" novalidate>
+<div class="panel-group" id="accordion">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+          Classifieds Details
+        </a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in">
+      <div class="panel-body">
+        <div class="form-group">
+            <label for="" class="control-label">Title</label>
+            <input type="text" class="form-control input-sm" ng-model="classified.heading" required>
+        </div>
+       <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">  
+                <label class="control-label" for="name">Contact Person</label>
+                <input type="text" class="form-control input-sm" ng-model="classified.contact_person" required>   
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Phone</label>
+                <input type="text" class="form-control input-sm" ng-model="classified.phone">
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Email</label>
+                <input type="text" name="" class="form-control input-sm" ng-model="classified.email">
+            </div> 
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="" class="control-label">Posted on</label>
+                <input type="date" class="form-control input-sm" ng-model="classified.posted_on" >
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Ends on</label>
+                <input type="date" class="form-control input-sm" ng-model="classified.ends_on">
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="" class="control-label">Categories</label>
+                <select ui-select2="cat_select2Options" multiple ng-model="classified.categories" class="form-control input-sm">
+                    <option ng-repeat="category in categories" value="{{category.category_id}}">{{category.category}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Sub-categories</label>
+                <select ui-select2="sub_select2Options" multiple ng-model="classified.sub_categories" class="form-control input-sm">
+                    <option ng-repeat="sub_category in sub_categories" value="{{sub_category.sub_category_id}}">{{sub_category.sub_category}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Features</label>
+                <select ui-select2="features_select2Options" multiple ng-model="classified.features" class="form-control input-sm">
+                    <option ng-repeat="feature in features" value="{{feature.feature_id}}">{{feature.feature}}</option>
+                </select>
+            </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+    <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+          Specifications
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse ">
+        <div class="panel-body">
+            <div class="row">
+                <div class="form-group col-sm-4">
+                    <label for="" class="control-label">Price</label>
+                    <input type="text" class="form-control" ng-model="classified.price">
+                </div>
+                <div class="form-group col-sm-4" ng-repeat="spec in classified.specs">
+                    <label for="" class="control-label">{{spec.spec}}</label>
+                    <input type="text" class="form-control" ng-model="spec.value">
+                </div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+{{specs}}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+          Location details
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse ">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="" class="control-label">Country</label>
+                        <select ng-model="classified.country_id" class="form-control input-sm" ng-options="i.country_id as i.country for i in countries" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="control-label">State</label>
+                        <select ng-model="classified.state_id" class="form-control input-sm" ng-options="state.state_id as state.state for state in states" required></select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="" class="control-label">District</label>
+                        <select ng-model="classified.district_id" class="form-control input-sm" ng-options="district.district_id as district.district for district in districts"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="control-label">Area</label>
+                        <select ng-model="classified.area_id" class="form-control input-sm" ng-options="area.area_id as area.area for area in areas"></select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="" class="control-label">Address line 1</label>
+                        <input type="text" class="form-control input-sm" ng-model="classified.address_line_1">
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="control-label">Address line 2</label>
+                        <input type="text" class="form-control input-sm" ng-model="classified.address_line_2">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Description</a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse">
+            <div class="panel-body">
+                <wysiwyg textarea-id="question" textarea-class="form-control input-sm"  textarea-height="80px" textarea-name="textareaQuestion" ng-model="classified.description" enable-bootstrap-title="true"></wysiwyg>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <button type="submit" class="btn btn-info"  ng-disabled="userForm.$invalid">Update</button>         
+    <button class="btn btn-default" ng-click="reset_data();">Reset</button>         
+</div>
+</form>
+
+
+<!--   <input type="file" ng-file-select="onFileSelect($files)" >
+<button ng-click="upload.abort()">Cancel Upload</button> -->

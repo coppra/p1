@@ -110,6 +110,10 @@
                 <label for="" class="control-label">Cover photo</label>
                 <input type="file" name="cover" class="form-control input-sm" ng-file-select="onFileSelect2($files)">
             </div>
+            <div class="form-group" ng-class="{'has-error' :userForm.message.$invalid}">
+                <label for="" class="control-label">Message (status)</label>
+                <input type="text" name="message" class="form-control input-sm" ng-model="localsearch.message" ng-maxlength="200">
+            </div>
             
         </div>
       </div>
@@ -177,7 +181,20 @@
         </div>
         <div id="collapseThree" class="panel-collapse">
             <div class="panel-body">
-                <wysiwyg textarea-id="question" textarea-class="form-control input-sm"  textarea-height="80px" textarea-name="textareaQuestion" textarea-required ng-model="localsearch.description" enable-bootstrap-title="true"></wysiwyg>
+                <wysiwyg textarea-id="question" textarea-class="form-control input-sm"  textarea-height="80px" textarea-name="textareaQuestion" ng-model="localsearch.description" enable-bootstrap-title="true"></wysiwyg>
+                <!-- <textarea name="" id="" cols="30" rows="5" class="form-control input-sm" ng-model="localsearch.description" placeholder="Describe your business/service"></textarea> -->
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">More details</a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse">
+            <div class="panel-body">
+                <wysiwyg textarea-id="question" textarea-class="form-control input-sm"  textarea-height="80px" textarea-name="textareaQuestion" ng-model="localsearch.details" enable-bootstrap-title="true"></wysiwyg>
                 <!-- <textarea name="" id="" cols="30" rows="5" class="form-control input-sm" ng-model="localsearch.description" placeholder="Describe your business/service"></textarea> -->
             </div>
         </div>

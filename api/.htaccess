@@ -19,8 +19,11 @@ RewriteRule ^roles(.+)?$ roles.php
 RewriteRule ^locations(.+)?$ locations.php 
 RewriteRule ^categories(.+)?$ categories.php 
 RewriteRule ^localsearch(.+)?$ localsearch.php 
+RewriteRule ^classifieds(.+)?$ classifieds.php 
 RewriteRule ^loc_features(.+)?$ loc_features.php 
+RewriteRule ^cla_features(.+)?$ cla_features.php 
 RewriteRule ^loc_products(.+)?$ loc_products.php 
+RewriteRule ^cla_specs(.+)?$ cla_specs.php 
 
 
 </IfModule>

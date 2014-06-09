@@ -49,7 +49,7 @@ cpanelApp.config(['$stateProvider', '$urlRouterProvider','$locationProvider','$h
             abstract:true,
             template:"<ui-view>",
             data:{
-                access:access.franchisee
+                access:access.executive
             }
         })
         .state('executive.profile',{
@@ -70,7 +70,75 @@ cpanelApp.config(['$stateProvider', '$urlRouterProvider','$locationProvider','$h
         .state('executive.profile.password',{
             url:'password/',
             templateUrl:'./partials/profile/password.html'
+        });
+    $stateProvider
+        .state('admin',{
+            abstarct:true,
+            template:"<ui-view>",
+            data:{
+                access:access.admin
+            }
         })
+        .state('admin.admin',{
+            url:'/admin',
+            templateUrl:'./partials/admin/list.html',
+            controller:'AdminListCtrl'
+        })
+        .state('admin.newadmin',{
+            url:'/admin/new',
+            templateUrl:'./partials/admin/new.html',
+            controller:'AdminAddCtrl'
+        })
+        .state('admin.viewadmin',{
+            abstarct:true,
+            url:'/admin/:id/',
+            templateUrl:'./partials/admin/view.html',
+            controller:'AdminViewCtrl'
+        })
+            .state('admin.viewadmin.home',{
+                url:'',
+                templateUrl:'./partials/admin/home.html',
+                controller:'AdminHomeCtrl'
+            })
+            .state('admin.viewadmin.edit',{
+                url:'edit/',
+                templateUrl:'./partials/admin/edit.html',
+                controller:'AdminEditCtrl' 
+            });
+    $stateProvider
+        .state('franchisee',{
+            abstarct:true,
+            template:"<ui-view>",
+            data:{
+                access:access.franchisee
+            }
+        })
+        .state('franchisee.user',{
+            url:'/user',
+            templateUrl:'./partials/user/list.html',
+            controller:'UserListCtrl'
+        })
+        .state('franchisee.newuser',{
+            url:'/user/new',
+            templateUrl:'./partials/user/new.html',
+            controller:'UserAddCtrl'
+        })
+        .state('franchisee.viewuser',{
+            url:'/user/:id/',
+            templateUrl:'./partials/user/view.html',
+            controller:'UserViewCtrl'
+        })
+            .state('franchisee.viewuser.home',{
+                url:'',
+                templateUrl:'./partials/user/home.html',
+                controller:'UserHomeCtrl'
+            })
+            .state('franchisee.viewuser.edit',{
+                url:'edit/',
+                templateUrl:'./partials/user/edit.html',
+                controller:'UserEditCtrl'
+            });
+    $stateProvider
         .state('executive.localsearch',{
             url:'/localsearch',
             templateUrl:'./partials/localsearch.html',
@@ -96,8 +164,34 @@ cpanelApp.config(['$stateProvider', '$urlRouterProvider','$locationProvider','$h
                 url:'edit/',
                 templateUrl:'./partials/localsearch/edit.html',
                 controller:'EditLocalsearchCtrl'
+            })
+        .state('executive.classified',{
+            url:'/classified',
+            templateUrl:'./partials/classified/list.html',
+            controller:'ClassifiedListCtrl'
+        })
+        .state('executive.newclassified',{
+            url:'/classified/new',
+            templateUrl:'./partials/classified/new.html',
+            controller:'ClassifiedAddCtrl'
+        })
+        .state('executive.viewclassified',{
+            abstarct:true,
+            url:'/classified/:id/',
+            templateUrl:'./partials/classified/view.html',
+            controller:'ClassifiedViewCtrl'
+        })
+            .state('executive.viewclassified.home',{
+                url:'',
+                templateUrl:'./partials/localsearch/home.html',
+                controller:'ClassifiedHomeCtrl'
+            })
+            .state('executive.viewclassified.edit',{
+                url:'edit/',
+                templateUrl:'./partials/classified/edit.html',
+                controller:'ClassifiedEditCtrl'
             });
-    $stateProvider
+/*    $stateProvider
         .state('admin',{
             abstract:true,
             template:"<ui-view>",
@@ -109,37 +203,8 @@ cpanelApp.config(['$stateProvider', '$urlRouterProvider','$locationProvider','$h
             url:'/location',
             templateUrl:'./partials/location.html',
             controller:'LocationCtrl'
-        })
-        .state('admin.users',{
-            url:'/users',
-            templateUrl:'./partials/users.html',
-            controller:'UserListCtrl'
-        })
-        .state('admin.addUser',{
-            url:'/users/new',
-            templateUrl:'./partials/adduser.html',
-            controller:'AddUserCtrl'
-        })
-        .state('admin.editUser',{
-             abstract:true,
-            url:'/users/:id',
-            templateUrl:'./partials/edituser.html'
-        })
-        .state('admin.editUser.profile',{
-            url:'',
-            templateUrl:'./partials/editprofile.html',
-            controller:''
-        })
-        .state('admin.editUser.business',{
-            url:'/business/',
-            templateUrl:'./partials/editbusiness.html',
-        })
-        .state('admin.loc_categories',{
-            url:'/loc_categories/',
-            templateUrl:'./partials/loc_categories.html',
-            controller:'LocCategoryCtrl'
-        });
-  //  $urlRouterProvider.otherwise('/404');
+        });*/
+    $urlRouterProvider.otherwise('/404');
     // FIX for trailing slashes. Gracefully "borrowed" from https://github.com/angular-ui/ui-router/issues/50
     $urlRouterProvider.rule(function($injector, $location) {
         if($location.protocol() === 'file')

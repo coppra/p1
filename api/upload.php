@@ -16,7 +16,8 @@ function getdir($category,$kind,$id){
 		case 'localsearch':
 			$dir = $dir.'localsearch/';
 			break;
-		
+		case 'classifieds':
+			$dir = $dir.'classifieds/';
 		default:
 			# code...
 			break;

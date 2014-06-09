@@ -20,7 +20,7 @@ function getAdmins(){
 	$limit=0;
 	$no_of_pages = 0;
 	$no_of_rows = 0;
-	$conditions_params=array('admin_id','fname','email','country_id','state_id','district_id','status','area_id');
+	$conditions_params=array('title','email');
 	$conditions = array();
 	$query_condition='';
 	$app = Slim::getInstance();
@@ -51,8 +51,11 @@ function getAdmins(){
 	}
 	$offset = ($page - 1) * $limit;
 	$sql_1 = "SELECT COUNT(admin_id) FROM admins".$query_condition;
-	$sql_2 = "SELECT * FROM admins INNER JOIN countries USING(country_id) INNER JOIN states USING(state_id) INNER JOIN districts USING(district_id) INNER JOIN areas USING(area_id) ".$query_condition." LIMIT :offset , :limit";
-	$sql_2 = "SELECT * FROM admins LIMIT :offset , :limit";
+	$sql_2 = "SELECT * FROM admins 
+				LEFT JOIN countries USING(country_id) 
+				LEFT JOIN states USING(state_id) 
+				LEFT JOIN districts USING(district_id) 
+				LEFT JOIN areas USING(area_id) ".$query_condition." LIMIT :offset , :limit";
 	// echo $sql_2.'<br><hr>';
 	try {
 		$db = getConnection();
@@ -114,8 +117,9 @@ function addAdmin(){
 		$stmt->bindParam("address_line_2", $data->address_line_2);
 		$stmt->bindParam("status", $data->status);
 		$stmt->execute();
-		echo $db->lastInsertId();
-		$db = null; 
+		$result['admin_id'] = $db->lastInsertId();
+		$db = null;
+        echo json_encode($result);
 	} catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}

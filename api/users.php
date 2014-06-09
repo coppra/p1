@@ -20,8 +20,7 @@ function getUsers(){
 	$limit=0;
 	$no_of_pages = 0;
 	$no_of_rows = 0;
-	$conditions_params=array('user_id','username','email','country_id','state_id','district_id','status','area_id');
-	//$conditions_params=['user_id','username','email','country_id','state_id','district_id','status','area_id'];
+	$conditions_params=array('user_id','title','email','admin_id','country_id','state_id','district_id','status','area_id');
 	$conditions = array();
 	$query_condition='';
 	$app = Slim::getInstance();
@@ -52,8 +51,10 @@ function getUsers(){
 	}
 	$offset = ($page - 1) * $limit;
 	$sql_1 = "SELECT COUNT(user_id) FROM users".$query_condition;
-	$sql_2 = "SELECT * FROM users INNER JOIN countries USING(country_id) INNER JOIN states USING(state_id) INNER JOIN districts USING(district_id) INNER JOIN areas USING(area_id) ".$query_condition." LIMIT :offset , :limit";
-	$sql_2 = "SELECT * FROM users LIMIT :offset , :limit";
+	$sql_2 = "SELECT * FROM users LEFT JOIN countries USING(country_id)
+				 LEFT JOIN states USING(state_id) 
+				 LEFT JOIN districts USING(district_id) 
+				 LEFT JOIN areas USING(area_id) ".$query_condition." LIMIT :offset , :limit";
 	// echo $sql_2.'<br><hr>';
 	try {
 		$db = getConnection();
@@ -96,13 +97,15 @@ function getUser($id){
 function addUser(){
 	$request = Slim::getInstance()->request();
 	$data = json_decode($request->getBody());
-	$sql = "INSERT INTO users (email,password,name,phone1,phone2,area_id,district_id,state_id,country_id,address_line_1,address_line_2,address_line_3,status) VALUES(:email,:password,:name,:phone1,:phone2,:area_id,:district_id,:state_id,:country_id,:address_line_1,:address_line_2,:address_line_3,:status)";
+	$sql = "INSERT INTO users (title,email,password,fname,lname,phone1,phone2,area_id,district_id,state_id,country_id,address_line_1,address_line_2,status,admin_id) VALUES(:title,:email,:password,:fname,:lname,:phone1,:phone2,:area_id,:district_id,:state_id,:country_id,:address_line_1,:address_line_2,:status,:admin_id)";
 	try{
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
+		$stmt->bindParam("title", $data->title);
 		$stmt->bindParam("email", $data->email);
 		$stmt->bindParam("password", $data->password);
-		$stmt->bindParam("name", $data->name);
+		$stmt->bindParam("fname", $data->fname);
+		$stmt->bindParam("lname", $data->lname);
 		$stmt->bindParam("phone1", $data->phone1);
 		$stmt->bindParam("phone2", $data->phone2);
 		$stmt->bindParam("area_id", $data->area_id);
@@ -111,20 +114,60 @@ function addUser(){
 		$stmt->bindParam("country_id", $data->country_id);
 		$stmt->bindParam("address_line_1", $data->address_line_1);
 		$stmt->bindParam("address_line_2", $data->address_line_2);
-		$stmt->bindParam("address_line_3", $data->address_line_3);
-		 $stmt->bindParam("status", $data->status);
+		$stmt->bindParam("status", $data->status);
+		$stmt->bindParam("admin_id", $data->admin_id);
 		$stmt->execute();
-		echo $db->lastInsertId();
-		
-		//$result = $stmt->fetchAll(PDO::FETCH_OBJ); 
-		$db = null; 
-		//echo json_encode($result);
+		$result['user_id'] = $db->lastInsertId();
+		$db = null;
+        echo json_encode($result);
 	} catch(PDOException $e) {
-		//error_log($e->getMessage(), 3, '/var/tmp/php.log');
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}
 }
-
+function updateUser($user_id){
+	$request = Slim::getInstance()->request();
+	$data = json_decode($request->getBody());
+	$sql = "UPDATE users SET title=:title, fname=:fname, lname=:lname, email=:email, phone1=:phone1, phone2=:phone2, area_id=:area_id, district_id=:district_id, state_id=:state_id, country_id=:country_id, address_line_1=:address_line_1, address_line_2=:address_line_2, status=:status	WHERE user_id=:user_id";
+	try{
+		$db = getConnection();
+		$stmt = $db->prepare($sql);  
+		$stmt->bindParam("title", $data->title);
+		$stmt->bindParam("fname", $data->fname);
+		$stmt->bindParam("lname", $data->lname);
+		$stmt->bindParam("email", $data->email);
+		$stmt->bindParam("phone1", $data->phone1);
+		$stmt->bindParam("phone2", $data->phone2);
+		$stmt->bindParam("area_id", $data->area_id);
+		$stmt->bindParam("district_id", $data->district_id);
+		$stmt->bindParam("state_id", $data->state_id);
+		$stmt->bindParam("country_id", $data->country_id);
+		$stmt->bindParam("address_line_1", $data->address_line_1);
+		$stmt->bindParam("address_line_2", $data->address_line_2);
+		$stmt->bindParam("status", $data->status);
+		$stmt->bindParam("user_id", $user_id);
+		$stmt->execute();
+		$db = null; 
+		$result['status']='updated';
+		echo json_encode($result);
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+function resetPassword($admin_id){
+	$request = Slim::getInstance()->request();
+	$data = json_decode($request->getBody());
+	$sql = "UPDATE admins SET password=:password WHERE admin_id=:admin_id";
+	try{
+		$db = getConnection();
+		$stmt = $db->prepare($sql);
+		$stmt->bindParam("password", $data->password);
+		$stmt->bindParam("admin_id", $admin_id);
+		$stmt->execute();
+		$db = null; 
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
 function authenticate(){
 	$request = Slim::getInstance()->request();
 	$data = json_decode($request->getBody());	
