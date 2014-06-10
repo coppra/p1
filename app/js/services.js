@@ -161,3 +161,23 @@ appServices.factory('Classified',['$resource',function($resource){
         query: {method:'GET', isArray:false}
     });
 }]);
+appServices.factory('Job',['$resource',function($resource){
+    return $resource('../api/jobs/:Id?', {Id:"@Id"},{
+        query: {method:'GET', isArray:false}
+    });
+}]);
+appServices.factory('Job_industry',['$resource',function($resource){
+    return $resource('../api/jobs/industry/:Id?', {Id:"@Id"},{
+        query: {method:'GET', isArray:true}
+    });
+}]);
+appServices.factory('Job_designation',['$resource',function($resource){
+    return $resource('../api/jobs/designation/:Id?', {Id:"@Id"},{
+        query: {method:'GET', isArray:true}
+    });
+}]);
+appServices.factory('Job_tag',['$resource',function($resource){
+    return $resource('../api/jobs/tag/:Id?', {Id:"@Id"},{
+        query: {method:'GET', isArray:true}
+    });
+}]);

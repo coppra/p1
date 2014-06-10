@@ -165,6 +165,21 @@ cpanelApp.config(['$stateProvider', '$urlRouterProvider','$locationProvider','$h
                 templateUrl:'./partials/localsearch/edit.html',
                 controller:'EditLocalsearchCtrl'
             })
+        .state('executive.loc_categories',{
+            url:'/loc_categories',
+            templateUrl:'./partials/localsearch/categories.html',
+            controller:'LocCategoryCtrl'
+        })
+        .state('executive.cla_categories',{
+            url:'/cla_categories',
+            templateUrl:'./partials/classified/categories.html',
+            controller:'ClaCategoryCtrl'
+        })
+        .state('executive.job_categories',{
+            url:'/job_categories',
+            templateUrl:'./partials/job/categories.html',
+            controller:'JobCategoryCtrl'
+        })
         .state('executive.classified',{
             url:'/classified',
             templateUrl:'./partials/classified/list.html',
