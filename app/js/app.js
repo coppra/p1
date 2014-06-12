@@ -139,6 +139,11 @@ cpanelApp.config(['$stateProvider', '$urlRouterProvider','$locationProvider','$h
                 controller:'UserEditCtrl'
             });
     $stateProvider
+        .state('executive.location',{
+            url:'/location',
+            templateUrl:'./partials/location.html',
+            controller:'LocationCtrl'
+        })
         .state('executive.localsearch',{
             url:'/localsearch',
             templateUrl:'./partials/localsearch.html',
@@ -205,6 +210,58 @@ cpanelApp.config(['$stateProvider', '$urlRouterProvider','$locationProvider','$h
                 url:'edit/',
                 templateUrl:'./partials/classified/edit.html',
                 controller:'ClassifiedEditCtrl'
+            })
+        .state('executive.job',{
+            url:'/job',
+            templateUrl:'./partials/job/list.html',
+            controller:'JobListCtrl'
+        })
+        .state('executive.newjob',{
+            url:'/job/new',
+            templateUrl:'./partials/job/new.html',
+            controller:'JobAddCtrl'
+        })
+        .state('executive.viewjob',{
+            abstarct:true,
+            url:'/job/:id/',
+            templateUrl:'./partials/job/view.html',
+            controller:'JobViewCtrl'
+        })
+            .state('executive.viewjob.home',{
+                url:'',
+                templateUrl:'./partials/job/home.html',
+                controller:'JobHomeCtrl'
+            })
+            .state('executive.viewjob.edit',{
+                url:'edit/',
+                templateUrl:'./partials/job/edit.html',
+                controller:'JobEditCtrl'
+            })
+        .state('executive.offer',{
+            url:'/offer',
+            templateUrl:'./partials/offer/list.html',
+            controller:'OfferListCtrl'
+        })
+        .state('executive.newoffer',{
+            url:'/offer/new',
+            templateUrl:'./partials/offer/new.html',
+            controller:'OfferAddCtrl'
+        })
+        .state('executive.viewoffer',{
+            abstarct:true,
+            url:'/offer/:id/',
+            templateUrl:'./partials/offer/view.html',
+            controller:'OfferViewCtrl'
+        })
+            .state('executive.viewoffer.home',{
+                url:'',
+                templateUrl:'./partials/offer/home.html',
+                controller:'OfferHomeCtrl'
+            })
+            .state('executive.viewoffer.edit',{
+                url:'edit/',
+                templateUrl:'./partials/offer/edit.html',
+                controller:'OfferEditCtrl'
             });
 /*    $stateProvider
         .state('admin',{

@@ -199,7 +199,6 @@ function addJob(){
 function updateJob($id){
     $request = Slim::getInstance()->request();
     $data = json_decode($request->getBody());
-    $sql = "INSERT INTO jobs (job_title,description,salary,min_experience,max_experience,job_type,shift,company_name,company_brief,contact_person,phone1,phone2,email,website,established,business_id,address_line_1,address_line_2,area_id,district_id,state_id,country_id,start_date,end_date) VALUES(:job_title,:description,:salary,:min_experience,:max_experience,:job_type,:shift,:company_name,:company_brief,:contact_person,:phone1,:phone2,:email,:website,:established,:business_id,:address_line_1,:address_line_2,:area_id,:district_id,:state_id,:country_id,:start_date,:end_date)";
     $sql = "UPDATE jobs SET job_title=:job_title, description=:description, salary=:salary, min_experience=:min_experience, max_experience=:max_experience, job_type=:job_type, shift=:shift, company_name=:company_name, company_brief=:company_brief, contact_person=:contact_person, phone1=:phone1, phone2=:phone2, email=:email, website=:website, established=:established, business_id=:business_id, address_line_1=:address_line_1, address_line_2=:address_line_2, area_id=:area_id, district_id=:district_id, state_id=:state_id, country_id=:country_id, start_date=:start_date, end_date=:end_date WHERE job_id=:job_id";
     try {
         $db = getConnection();

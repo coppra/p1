@@ -181,3 +181,13 @@ appServices.factory('Job_tag',['$resource',function($resource){
         query: {method:'GET', isArray:true}
     });
 }]);
+appServices.factory('Offer',['$resource',function($resource){
+    return $resource('../api/offers/:Id?', {Id:"@Id"},{
+        query: {method:'GET', isArray:false}
+    });
+}]);
+appServices.factory('Offer_tag',['$resource',function($resource){
+    return $resource('../api/offers/tag/:Id?', {Id:"@Id"},{
+        query: {method:'GET', isArray:true}
+    });
+}]);

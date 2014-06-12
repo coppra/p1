@@ -1,0 +1,198 @@
+<pre>{{job}}</pre>
+<form name="userForm" id="userForm" ng-submit="processForm()" novalidate>
+<div class="panel-group" id="accordion">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+          Job Details
+        </a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in">
+      <div class="panel-body">
+       <div class="row">
+        <div class="col-sm-4">
+        	<div class="form-group">  
+                <label class="control-label" for="name">Title</label>
+                <input type="text" class="form-control input-sm" ng-model="job.job_title" required>   
+            </div>
+            <div class="form-group">  
+                <label class="control-label" for="name">Salary</label>
+                <input type="text" class="form-control input-sm" ng-model="job.salary" required>   
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Min Experience</label>
+                <input type="text" class="form-control input-sm" ng-model="job.min_experience" placeholder="In Years">
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Max Experience</label>
+                <input type="text" class="form-control input-sm" ng-model="job.max_experience" placeholder="In Years">
+            </div>
+            
+        </div>
+        <div class="col-sm-4">
+        	<div class="form-group">
+                <label for="" class="control-label">Job Type</label>
+                <select name="" id="" class="form-control input-sm" ng-model="job.job_type">
+                	<option value="full_time">Full Time</option>
+                	<option value="part_time">Part Time</option>
+                	<option value="freelance">Freelance</option>
+                </select>
+            </div> 
+            <div class="form-group">
+                <label for="" class="control-label">Shift</label>
+                <select name="" id="" class="form-control input-sm" ng-model="job.shift">
+                	<option value="day">Day</option>
+                	<option value="night">Night</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Posted on</label>
+                <input type="date" class="form-control input-sm" ng-model="job.start_date" >
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Ends on</label>
+                <input type="date" class="form-control input-sm" ng-model="job.end_date">
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="" class="control-label">Industry</label>
+                <select ui-select2="cat_select2Options" multiple ng-model="job.industries" class="form-control input-sm">
+                    <option ng-repeat="industry in industries" value="{{industry.industry_id}}">{{industry.industry}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Designation</label>
+                <select ui-select2="sub_select2Options" multiple ng-model="job.designations" class="form-control input-sm">
+                    <option ng-repeat="designation in designations" value="{{designation.designation_id}}">{{designation.designation}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Tags</label>
+                <input type="hidden" ui-select2="tags_select2Options" ng-model="job.tags" class="form-control input-sm">
+            </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+          Business details
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse ">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+            		    <label for="" class="control-label">Business_id</label>
+            		    <input type="text" name="" class="form-control input-sm" ng-model="job.business_id">
+            		</div>
+            		<div class="form-group">
+            		    <label for="" class="control-label">Company name</label>
+            		    <input type="text" name="" class="form-control input-sm" ng-model="job.company_name">
+            		</div>
+            		<div class="form-group">
+            		    <label for="" class="control-label">About company</label>
+            		    <input type="text" name="" class="form-control input-sm" ng-model="job.company_brief">
+            		</div>
+                </div>
+                <div class="col-sm-4">
+            		<div class="form-group">
+            		    <label for="" class="control-label">Contact Person</label>
+            		    <input type="text" name="" class="form-control input-sm" ng-model="job.contact_person">
+            		</div>
+            		<div class="form-group">
+            		    <label for="" class="control-label">Phone no.</label>
+            		    <input type="text" name="" class="form-control input-sm" ng-model="job.phone1">
+            		</div>
+            		<div class="form-group">
+            		    <label for="" class="control-label">Seconday phone no.</label>
+            		    <input type="text" name="" class="form-control input-sm" ng-model="job.phone2">
+            		</div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+            		    <label for="" class="control-label">Email</label>
+            		    <input type="text" name="" class="form-control input-sm" ng-model="job.email">
+            		</div>
+            		<div class="form-group">
+            		    <label for="" class="control-label">Website</label>
+            		    <input type="text" name="" class="form-control input-sm" ng-model="job.website">
+            		</div>
+                </div>
+            </div>
+        </div>
+    </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+          Location details
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse ">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="" class="control-label">Country</label>
+                        <select ng-model="job.country_id" class="form-control input-sm" ng-options="i.country_id as i.country for i in countries" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="control-label">State</label>
+                        <select ng-model="job.state_id" class="form-control input-sm" ng-options="state.state_id as state.state for state in states" required></select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="" class="control-label">District</label>
+                        <select ng-model="job.district_id" class="form-control input-sm" ng-options="district.district_id as district.district for district in districts"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="control-label">Area</label>
+                        <select ng-model="job.area_id" class="form-control input-sm" ng-options="area.area_id as area.area for area in areas"></select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="" class="control-label">Address line 1</label>
+                        <input type="text" class="form-control input-sm" ng-model="job.address_line_1">
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="control-label">Address line 2</label>
+                        <input type="text" class="form-control input-sm" ng-model="job.address_line_2">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Description</a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse">
+            <div class="panel-body">
+                <wysiwyg textarea-id="question" textarea-class="form-control input-sm"  textarea-height="80px" textarea-name="textareaQuestion" ng-model="job.description" enable-bootstrap-title="true"></wysiwyg>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <button type="submit" class="btn btn-info"  ng-disabled="userForm.$invalid">Update</button>         
+    <button class="btn btn-default" ng-click="reset_data();">Reset</button>         
+</div>
+</form>
+
+
+<!--   <input type="file" ng-file-select="onFileSelect($files)" >
+<button ng-click="upload.abort()">Cancel Upload</button> -->

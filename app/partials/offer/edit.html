@@ -1,0 +1,140 @@
+<pre>{{offer}}</pre>
+<form name="userForm" id="userForm" ng-submit="processForm()" novalidate>
+<div class="panel-group" id="accordion">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+          offer Details
+        </a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in">
+      <div class="panel-body">
+       <div class="row">
+        <div class="col-sm-4">
+        	<div class="form-group">  
+                <label class="control-label" for="name">Title</label>
+                <input type="text" class="form-control input-sm" ng-model="offer.offer_title" required>   
+            </div>
+
+            <div class="form-group">  
+                <label class="control-label" for="name">Discout value</label>
+                <input type="text" class="form-control input-sm" ng-model="offer.value" placeholder="In %">   
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Business Id</label>
+                <input type="text" class="form-control input-sm" ng-model="offer.business_id">
+            </div>
+
+            
+        </div>
+        <div class="col-sm-4">
+			
+            <div class="form-group">
+                <label for="" class="control-label">Start date</label>
+                <input type="date" class="form-control input-sm" ng-model="offer.start_date" >
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Ends on</label>
+                <input type="date" class="form-control input-sm" ng-model="offer.end_date">
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="" class="control-label">Categories</label>
+                <select ui-select2="cat_select2Options" multiple ng-model="offer.categories" class="form-control input-sm">
+                    <option ng-repeat="category in categories" value="{{category.category_id}}">{{category.category}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">SubCategories</label>
+                <select ui-select2="sub_select2Options" multiple ng-model="offer.sub_categories" class="form-control input-sm">
+                    <option ng-repeat="sub_category in sub_categories" value="{{sub_category.sub_category_id}}">{{sub_category.sub_category}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Tags</label>
+                <input type="hidden" ui-select2="tags_select2Options" ng-model="offer.tags" class="form-control input-sm">
+            </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-default" ng-hide="offer.business_id">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+          Business details
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse ">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+                	<div class="form-group">
+            		    <label for="" class="control-label">Company name</label>
+            		    <input type="text" name="" class="form-control input-sm" ng-model="offer.name">
+            		</div>
+            		<div class="form-group">
+            		    <label for="" class="control-label">Caption</label>
+            		    <input type="text" name="" class="form-control input-sm" ng-model="offer.caption">
+            		</div>
+                    <div class="form-group">
+                        <label for="" class="control-label">Country</label>
+                        <select ng-model="offer.country_id" class="form-control input-sm" ng-options="i.country_id as i.country for i in countries"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="control-label">State</label>
+                        <select ng-model="offer.state_id" class="form-control input-sm" ng-options="state.state_id as state.state for state in states"></select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="" class="control-label">District</label>
+                        <select ng-model="offer.district_id" class="form-control input-sm" ng-options="district.district_id as district.district for district in districts"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="control-label">Area</label>
+                        <select ng-model="offer.area_id" class="form-control input-sm" ng-options="area.area_id as area.area for area in areas"></select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="" class="control-label">Address line 1</label>
+                        <input type="text" class="form-control input-sm" ng-model="offer.address_line_1">
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="control-label">Address line 2</label>
+                        <input type="text" class="form-control input-sm" ng-model="offer.address_line_2">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>	
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Description</a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse">
+            <div class="panel-body">
+                <wysiwyg textarea-id="question" textarea-class="form-control input-sm"  textarea-height="80px" textarea-name="textareaQuestion" ng-model="offer.description" enable-bootstrap-title="true"></wysiwyg>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <button type="submit" class="btn btn-info"  ng-disabled="userForm.$invalid">Update</button>         
+    <button class="btn btn-default" ng-click="reset_data();">Reset</button>         
+</div>
+</form>
+
+
+<!--   <input type="file" ng-file-select="onFileSelect($files)" >
+<button ng-click="upload.abort()">Cancel Upload</button> -->
