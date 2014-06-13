@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Gofindy CPanel</title>
+  <base href="/p1/app/">
   <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="lib/ng-table.min.css">
   <link rel="stylesheet" href="lib/offcanvas.css">
@@ -29,7 +30,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="#/">Profile</a></li>
                 <li class="dropdown" data-access-level="accessLevels.executive" active-nav>
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown">Users <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Users <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li data-access-level="accessLevels.executive" active-nav><a href="#/user">Users</a></li>
                         <li class="divider"></li>
@@ -41,6 +42,7 @@
                 <li data-access-level="accessLevels.executive" active-nav><a href="#/classified">Classified </a></li>
                 <li data-access-level="accessLevels.executive" active-nav><a href="#/job">Job </a></li>
                 <li data-access-level="accessLevels.executive" active-nav><a href="#/offer">Offer </a></li>
+                <li data-access-level="accessLevels.executive" active-nav><a href="#/product">Product </a></li>
                 <li data-access-level="accessLevels.executive" active-nav><a href="">Smartcard </a></li>
                 <li class="dropdown">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown">Categories <b class="caret"></b></a>
@@ -105,7 +107,8 @@
     <script src="js/localsearchController.js"></script>
     <script src="js/classifiedController.js"></script>
     <script src="js/jobController.js"></script>
-  	<script src="js/offerController.js"></script>
+    <script src="js/offerController.js"></script>
+  	<script src="js/productController.js"></script>
   	<script src="js/filters.js"></script>
     <script src="js/services.js"></script>
   	<script src="js/directives.js"></script>

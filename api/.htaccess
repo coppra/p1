@@ -22,6 +22,7 @@ RewriteRule ^localsearch(.+)?$ localsearch.php
 RewriteRule ^classifieds(.+)?$ classifieds.php 
 RewriteRule ^jobs(.+)?$ jobs.php 
 RewriteRule ^offers(.+)?$ offers.php 
+RewriteRule ^products(.+)?$ products.php 
 RewriteRule ^loc_features(.+)?$ loc_features.php 
 RewriteRule ^loc_products(.+)?$ loc_products.php 
 RewriteRule ^cla_features(.+)?$ cla_features.php 

@@ -262,6 +262,32 @@ cpanelApp.config(['$stateProvider', '$urlRouterProvider','$locationProvider','$h
                 url:'edit/',
                 templateUrl:'./partials/offer/edit.html',
                 controller:'OfferEditCtrl'
+            })
+        .state('executive.product',{
+            url:'/product',
+            templateUrl:'./partials/product/list.html',
+            controller:'ProductListCtrl'
+        })
+        .state('executive.newproduct',{
+            url:'/product/new',
+            templateUrl:'./partials/product/new.html',
+            controller:'ProductAddCtrl'
+        })
+        .state('executive.viewproduct',{
+            abstarct:true,
+            url:'/product/:id/',
+            templateUrl:'./partials/product/view.html',
+            controller:'ProductViewCtrl'
+        })
+            .state('executive.viewproduct.home',{
+                url:'',
+                templateUrl:'./partials/product/home.html',
+                controller:'ProductHomeCtrl'
+            })
+            .state('executive.viewproduct.edit',{
+                url:'edit/',
+                templateUrl:'./partials/product/edit.html',
+                controller:'ProductEditCtrl'
             });
 /*    $stateProvider
         .state('admin',{
@@ -306,7 +332,7 @@ cpanelApp.config(['$stateProvider', '$urlRouterProvider','$locationProvider','$h
         return path + '/?' + params.join('&');
     });
 
-  //  $locationProvider.html5Mode(true);
+   $locationProvider.html5Mode(true);
 
     $httpProvider.interceptors.push(function($q, $location) {
         return {

@@ -1,0 +1,114 @@
+<pre>{{product}}</pre>
+<form name="userForm" id="userForm" ng-submit="processForm()" novalidate>
+<div class="panel-group" id="accordion">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+          Product Details
+        </a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in">
+      <div class="panel-body">
+       <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">  
+                <label class="control-label" for="name">Business Id</label>
+                <input type="text" class="form-control input-sm" ng-model="product.business_id" required>   
+            </div>
+            <div class="form-group">  
+                <label class="control-label" for="name">Name</label>
+                <input type="text" class="form-control input-sm" ng-model="product.name" required>   
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Brand</label>
+                <input type="text" class="form-control input-sm" ng-model="product.brand">
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Code</label>
+                <input type="text" name="" class="form-control input-sm" ng-model="product.code">
+            </div> 
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="" class="control-label">Original Price</label>
+                <input type="text" class="form-control input-sm" ng-model="product.original_price" >
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Price</label>
+                <input type="text" class="form-control input-sm" ng-model="product.price">
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Quantity</label>
+                <input type="text" class="form-control input-sm" ng-model="product.qty">
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Photo (More photos can be added after registering)</label>
+                <input type="file" name="logo" class="form-control input-sm" ng-file-select="onFileSelect($files)">
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="" class="control-label">Categories</label>
+                <select ui-select2="cat_select2Options" multiple ng-model="product.categories" class="form-control input-sm">
+                    <option ng-repeat="category in categories" value="{{category.category_id}}">{{category.category}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Sub-categories</label>
+                <select ui-select2="sub_select2Options" multiple ng-model="product.sub_categories" class="form-control input-sm">
+                    <option ng-repeat="sub_category in sub_categories" value="{{sub_category.sub_category_id}}">{{sub_category.sub_category}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="" class="control-label">Tags</label>
+                <input type="hidden" ui-select2="tags_select2Options" ng-model="product.tags" class="form-control input-sm">
+            </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+    <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+          Specifications
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse ">
+        <div class="panel-body">
+            <div class="row">
+                <div class="form-group col-sm-4" ng-repeat="spec in product.specs">
+                    <label for="" class="control-label">{{spec.spec}}</label>
+                    <input type="text" class="form-control" ng-model="spec.value">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Description</a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse">
+            <div class="panel-body">
+                <wysiwyg textarea-id="question" textarea-class="form-control input-sm"  textarea-height="80px" textarea-name="textareaQuestion" ng-model="product.description" enable-bootstrap-title="true"></wysiwyg>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <button type="submit" class="btn btn-info"  ng-disabled="userForm.$invalid">Save</button>         
+    <button class="btn btn-default" ng-click="reset_data();">Reset</button>         
+</div>
+</form>
+
+
+<!--   <input type="file" ng-file-select="onFileSelect($files)" >
+<button ng-click="upload.abort()">Cancel Upload</button> -->

@@ -18,6 +18,13 @@ function getdir($category,$kind,$id){
 			break;
 		case 'classifieds':
 			$dir = $dir.'classifieds/';
+			break;
+		case 'offers':
+			$dir = $dir.'offers/';
+			break;
+		case 'products':
+			$dir = $dir.'products/';
+			break;
 		default:
 			# code...
 			break;

@@ -1,0 +1,16 @@
+Options +FollowSymLinks -Multiviews
+
+<IfModule mod_rewrite.c>
+SetEnv HTTP_MOD_REWRITE On
+
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Rewrite everything else to index.html to allow html5 state links
+RewriteRule ^ index.html [L]
+
+
+</IfModule>

@@ -191,3 +191,18 @@ appServices.factory('Offer_tag',['$resource',function($resource){
         query: {method:'GET', isArray:true}
     });
 }]);
+appServices.factory('Product',['$resource',function($resource){
+    return $resource('../api/products/:Id?', {Id:"@Id"},{
+        query: {method:'GET', isArray:false}
+    });
+}]);
+appServices.factory('Pro_tag',['$resource',function($resource){
+    return $resource('../api/products/tag/:Id?', {Id:"@Id"},{
+        query: {method:'GET', isArray:true}
+    });
+}]);
+appServices.factory('Pro_spec',['$resource',function($resource){
+    return $resource('../api/products/spec/:Id?', {Id:"@Id"},{
+        query: {method:'GET', isArray:true}
+    });
+}]);
